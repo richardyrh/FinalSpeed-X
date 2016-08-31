@@ -25,12 +25,13 @@
  - Added image resource
  - Mac dock icon support
  - **Successfully fixed the TCP bug in Mac OS X** and optimized the CapEnv class
-  - Start a ping thread before the loop starts
-  - Pass in the server address as a parameter
-  - Force test IP to the remote boost server
   - Adding pcap4j's separate packet factory module to build path (Not in dependencies)
   - Added a few debug outputs
   - Force exit in some weird scenarios
+- > Planned  
+>  - Start a ping thread before the loop starts  
+>  - Pass in the server address as a parameter  
+>  - Force test IP to the remote boost server
   
 	The `Aug 31` version is archived as `1.0 Alpha`
  
