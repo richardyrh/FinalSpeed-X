@@ -13,7 +13,6 @@ public class ConnectException extends Exception{
 	}
 	@Override
 	public void printStackTrace(){
-		//#MLog.println("???????????? "+message);
 	}
 
 }

@@ -30,8 +30,6 @@
   - Force exit in some weird scenarios
   - Pass in the server address as a parameter  
   - Force test IP to the remote boost server
-- > Planned  
->  - Start a ping thread before the loop starts 
   - Fixed the boost list selection bug 
   
 	The `Aug 31` version is archived as `Alpha 1.0`
@@ -40,4 +38,12 @@
  
 `Sep 1`
  
- 
+ - Complied some referenced classes (pcap4j,fastjson)
+ - Deleted unwanted classes in src
+ - Moved layout for speed indication
+ - Added a ping thread before the loop starts
+ - Changed some layout details so they align
+ - *Can't test UDP, maybe it won't work*
+ - Deleted unwanted reference libraries
+ - Fixed some translation
+ - Added the reference jars to the repository

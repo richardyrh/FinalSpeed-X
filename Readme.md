@@ -9,20 +9,21 @@
 
 ##How to Build
 Download the code or clone to a local directory then  import it using Eclipse (Haven't tested other IDEs yet). **JDK 1.7** is recommended for best compatibility. Right click on the imported project, click on Configure Build Path, then add in the external jars included in the directory.
-> Since I haven't pack some of the libraries into jars or remove unused references for the convenience of debugging, there may be lots of source files and redundant code.
 
 Create a run configuration and make the main class `FSClient` under `net.fs.client`
 
 ##Note
-Start a ping session to the server that shall be boosted before opening the client. There're still lots of UI issues that needed to be solved.
+Due to the complicated dependencies and my limited abilities, I'm not spending time to try delete some server classes since sometimes they share a same component class with a client.
+
+### Why did I translate the project into English?
+>面向国际社会，你们还要多学习一个  
+>有时间弄多语言
 
 ##Known Issues
-* Unless manually start up a ping thread, the client won't be able to find a usable TCP network interface.
 * Encoding problems making characters show weirdly.
 * Both English and Chinese translation is not complete.
-* The boost list may behave strangely, such as not highlighting the chosen item.
 * There are no root privelege detection for Mac/Linux yet.
-* You'll have to manually change `testIp_tcp` under method `detectMac_tcp()` in the class [`capEnv.java`](src/net/fs/cap/CapEnv.java).
+* The icon won't show properly under OS X dock.
 
 ##Update Log
 Can be found under the same directory as this readme file, or click [here](Edit Log.md).

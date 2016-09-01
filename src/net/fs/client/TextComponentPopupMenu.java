@@ -39,12 +39,12 @@ public class TextComponentPopupMenu extends JPopupMenu implements
 	JMenuItem cutItem, copyItem, pasteItem, deleteItem, selectAllItem;
 
 	public TextComponentPopupMenu() {
-		add(cutItem = new JMenuItem("??????"));
-		add(copyItem = new JMenuItem("??????"));
-		add(pasteItem = new JMenuItem("??????"));
-		add(deleteItem = new JMenuItem("??????"));
+		add(cutItem = new JMenuItem("Cut"));
+		add(copyItem = new JMenuItem("Copy"));
+		add(pasteItem = new JMenuItem("Paste"));
+		add(deleteItem = new JMenuItem("Delete"));
 		addSeparator();
-		add(selectAllItem = new JMenuItem("??????"));
+		add(selectAllItem = new JMenuItem("Select All"));
 
 		cutItem.setMnemonic('T');
 		copyItem.setMnemonic('C');

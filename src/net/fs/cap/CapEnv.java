@@ -460,10 +460,8 @@ public class CapEnv {
 						try {
 							Socket socket=new Socket(testIp_tcp,por);
 							socket.close();
-						} catch (UnknownHostException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
+						} catch (Exception e) {
+							System.out.println("Can't establish connection to target IP");
 						}
 					}
 				});

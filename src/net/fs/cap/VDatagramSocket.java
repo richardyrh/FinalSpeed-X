@@ -60,11 +60,11 @@ public class VDatagramSocket extends DatagramSocket{
 			if(tun.preDataReady){
 				tun.sendData(p.getData());
 			}else{
-				throw new IOException("???????????????!");
+				throw new IOException("Tunnel unconnected!");
 			}
 		}else{
 			
-			throw new IOException("???????????????! "+" thread "+Route.es.getActiveCount()+" "+p.getAddress()+":"+p.getPort());
+			throw new IOException("Tunnel doesn't exist!"+" thread "+Route.es.getActiveCount()+" "+p.getAddress()+":"+p.getPort());
 		}
 	}
 	

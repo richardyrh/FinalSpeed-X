@@ -150,11 +150,6 @@ public class ClientNoUI implements ClientUII{
 	}
 	
 	public void updateUISpeed(int conn,int downloadSpeed,int uploadSpeed){
-//		String string="?????????:"+conn+" ??????:"+Tools.getSizeStringKB(downloadSpeed)+"/S"
-//				+" ??????:"+Tools.getSizeStringKB(uploadSpeed)+"/S";
-//		if(downloadSpeedField!=null){
-//			downloadSpeedField.setText(string);
-//		}
 	}
 
 	JButton createButton(String name){
@@ -169,7 +164,7 @@ public class ClientNoUI implements ClientUII{
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
-				Font font = new Font("??????",Font.PLAIN,12);   
+				Font font = new Font("宋体",Font.PLAIN,12);   
 				UIManager.put("ToolTip.font",font);   
 				UIManager.put("Table.font",font);   
 				UIManager.put("TableHeader.font",font);   

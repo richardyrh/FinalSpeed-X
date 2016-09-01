@@ -53,17 +53,15 @@ public class TunManager {
 			TCPTun tun=connTable.get(key);
 			if(tun!=null){
 				if(tun.preDataReady){
-					//???????????????
 					long t=System.currentTimeMillis()-tun.lastReceiveDataTime;
 					if(t>6000){
 						connTable.remove(key);
 						if(capEnv.client){
 							defaultTcpTun=null;
-							MLog.println("tcp????????????");
+							MLog.println("TCP tunnel timeout");
 						}
 					}
 				}else{
-					//???????????????
 					if(System.currentTimeMillis()-tun.createTime>5000){
 						connTable.remove(key);
 					}

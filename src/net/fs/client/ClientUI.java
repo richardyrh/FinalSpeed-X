@@ -1097,7 +1097,7 @@ public class ClientUI implements ClientUII, WindowListener {
 				if (systemName.toLowerCase().contains("windows")) {
 					font = new Font("宋体", Font.PLAIN, 12);
 				} else {
-					font = new Font("San Francisco", Font.PLAIN, 12);
+					font = new Font("Helvetica Neue", Font.PLAIN, 12);
 				}
 				UIManager.put("ToolTip.font", font);
 				UIManager.put("Table.font", font);
@@ -1131,7 +1131,6 @@ public class ClientUI implements ClientUII, WindowListener {
 				UIManager.put("ToolBar.font", font);
 				UIManager.put("OptionPane.messageFont", font);
 				UIManager.put("OptionPane.buttonFont", font);
-
 				ToolTipManager.sharedInstance().setInitialDelay(130);
 			}
 
@@ -1140,9 +1139,9 @@ public class ClientUI implements ClientUII, WindowListener {
 
 	public static void setAutoRun(boolean run) {
 		String s = new File(".").getAbsolutePath();
-		String currentPaht = s.substring(0, s.length() - 1);
+		String currentPath = s.substring(0, s.length() - 1);
 		StringBuffer sb = new StringBuffer();
-		StringTokenizer st = new StringTokenizer(currentPaht, "\\");
+		StringTokenizer st = new StringTokenizer(currentPath, "\\");
 		while (st.hasMoreTokens()) {
 			sb.append(st.nextToken());
 			sb.append("\\\\");

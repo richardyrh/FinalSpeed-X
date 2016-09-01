@@ -106,7 +106,7 @@ public class TCPTun {
 	
 	Object syn_ident=new Object();
 	
-	//???????????????
+	//客户端发起
 	TCPTun(CapEnv capEnv,
 			Inet4Address serverAddress,short serverPort,
 			MacAddress srcAddress_mac,MacAddress dstAddrress_mac){
@@ -128,12 +128,12 @@ public class TCPTun {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		MLog.println("????????????????????? "+" ident "+localIdent);
+		MLog.println("Sending first handshake ident "+localIdent);
 		MLog.println(""+syncPacket);
 		
 	}
 
-	//???????????????
+	//服务端接收
 	TCPTun(CapEnv capServerEnv,
 			Inet4Address remoteAddress,short remotePort){
 		this.capEnv=capServerEnv;
@@ -161,13 +161,13 @@ public class TCPTun {
 		
 		if(!preDataReady){
 			if(!connectReady){
-				//???????????????
+				//第一次握手
 				dstMacaAddress=ethernetHeader.getSrcAddr();
 				if(tcpHeader.getSyn()&&!tcpHeader.getAck()){
 					remoteStartSequence=tcpHeader.getSequenceNumber();
 					remoteSequence=remoteStartSequence+1;
 					remoteSequence_max=remoteSequence;
-					MLog.println("????????????????????? "+remoteAddress.getHostAddress()+":"+remotePort+"->"+localAddress.getHostAddress()+":"+localPort+" ident "+ipV4Header.getIdentification());
+					MLog.println("Receiving first handshake "+remoteAddress.getHostAddress()+":"+remotePort+"->"+localAddress.getHostAddress()+":"+localPort+" ident "+ipV4Header.getIdentification());
 					MLog.println(""+packet);
 					Packet responePacket=PacketUtils.createSyncAck(
 							capEnv.local_mac,
@@ -182,16 +182,16 @@ public class TCPTun {
 						e.printStackTrace();
 					}
 					localSequence=localStartSequence+1;
-					MLog.println("????????????????????? "+capEnv.local_mac+"->"+capEnv.gateway_mac+" "+localAddress+"->"+" ident "+0);
+					MLog.println("Sending second handshake "+capEnv.local_mac+"->"+capEnv.gateway_mac+" "+localAddress+"->"+" ident "+0);
 
 					MLog.println(""+responePacket);
 				}
 
 				if(!tcpHeader.getSyn()&&tcpHeader.getAck()){
 					if(tcpPacket.getPayload()==null){
-						//???????????????,???????????????
+						//第三次握手,客户端确认
 						if(tcpHeader.getAcknowledgmentNumber()==localSequence){
-							MLog.println("????????????????????? "+" ident "+ipV4Header.getIdentification());
+							MLog.println("Sending third handshake "+" ident "+ipV4Header.getIdentification());
 							MLog.println(packet+"");
 							Thread t1=new Thread(){
 								public void run(){
@@ -202,11 +202,11 @@ public class TCPTun {
 							connectReady=true;
 						}
 					}
-					//MLog.println("???????????????preview\n "+packet);
+					//MLog.println("客户端响应preview\n "+packet);
 					//MLog.println("request "+tcp.ack());
 					sendedTable_server.remove(tcpHeader.getAcknowledgmentNumber());
 					boolean selfAck=selfAckTable.contains(ipV4Header.getIdentification());
-					//MLog.println("??????????????? "+"selfack "+selfAck+" id "+ipV4Header.getIdentification()+" ack_sequence "+tcpHeader.getAcknowledgmentNumberAsLong()+" "+sendedTable_server.size()+"ppppppp "+tcpHeader);
+					//MLog.println("客户端确认 "+"selfack "+selfAck+" id "+ipV4Header.getIdentification()+" ack_sequence "+tcpHeader.getAcknowledgmentNumberAsLong()+" "+sendedTable_server.size()+"ppppppp "+tcpHeader);
 				}
 				
 			}else {
@@ -244,7 +244,7 @@ public class TCPTun {
 			if(!connectReady){
 				if(tcpHeader.getAck()&&tcpHeader.getSyn()){
 					if(tcpHeader.getAcknowledgmentNumber()==(localStartSequence+1)){
-						MLog.println("????????????????????? "+" ident "+ipV4Header.getIdentification());
+						MLog.println("Receiving second handshake ident "+ipV4Header.getIdentification());
 						MLog.println(""+packet);
 						remoteStartSequence=tcpHeader.getSequenceNumber();
 						remoteSequence=remoteStartSequence+1;
@@ -252,13 +252,13 @@ public class TCPTun {
 						Packet p3=PacketUtils.createAck(capEnv.local_mac, capEnv.gateway_mac, capEnv.local_ipv4, localPort, remoteAddress, remotePort, remoteSequence , localSequence,getIdent());
 						try {
 							sendHandle.sendPacket(p3);
-							MLog.println("????????????????????? "+" ident "+localIdent);
+							MLog.println("Sending third handshake ident "+localIdent);
 							MLog.println(""+p3);
 							connectReady=true;
 							
 							byte[] sim=getSimRequestHead(remotePort);
 							sendData(sim);
-							MLog.println("???????????? "+" ident "+localIdent);
+							MLog.println("Sending request ident "+localIdent);
 						} catch (PcapNativeException e) {
 							e.printStackTrace();
 						} catch (NotOpenException e) {
@@ -270,13 +270,13 @@ public class TCPTun {
 				if(tcpPacket.getPayload()!=null){
 					preDataReady=true;
 					onReceiveDataPacket( tcpPacket, tcpHeader, ipV4Header );
-					MLog.println("???????????? "+" ident "+ipV4Header.getIdentification());
+					MLog.println("Receiving response ident "+ipV4Header.getIdentification());
 				}
 			}
 
 		}else {
 			if(tcpPacket.getPayload()!=null){
-				//MLog.println("??????????????????????????? "+capClientEnv.vDatagramSocket);
+				//MLog.println("客户端正式接收数据 "+capClientEnv.vDatagramSocket);
 				onReceiveDataPacket( tcpPacket, tcpHeader, ipV4Header );
 				TunData td=new TunData();
 				td.tun=this;
@@ -373,7 +373,7 @@ public class TCPTun {
 		return simData;
 	}
 	
-	public static String getRandomString(int length) { //length??????????????????????????????  
+	public static String getRandomString(int length) { //length表示生成字符串的长度  
 	    String base = "abcdefghkmnopqrstuvwxyz";     
 	    Random random = new Random();     
 	    StringBuffer sb = new StringBuffer();     
