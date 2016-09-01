@@ -101,7 +101,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
 	String domain = "";
 
-	String homeUrl="http://github.com/RCD-Y/finalspeed-X";
+	String homeUrl="http://github.com/RCD-Y/FinalSpeed-X";
 
 	public static ClientUI ui;
 
@@ -162,11 +162,6 @@ public class ClientUI implements ClientUII, WindowListener {
 		mainFrame = new JFrame();
 		
 		mainFrame.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(logoImg)).getImage());
-		if (systemName.toLowerCase().contains("os x")) {
-			
-			
-			//Application.getApplication().setDockIconImage(new ImageIcon(getClass().getClassLoader().getResource(logoImg)).getImage());
-		}
 		initUI();
 		checkPrivileges();
 		//TODO: Here
@@ -191,16 +186,14 @@ public class ClientUI implements ClientUII, WindowListener {
 		centerPanel.add(loginPanel, "");
 		loginPanel.setLayout(new MigLayout("insets 0 0 0 0"));
 
-		JLabel label_msg = new JLabel();
-		label_msg.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new MigLayout("insets 10 0 10 0"));
+		rightPanel.setLayout(new MigLayout("insets 0 0 0 0"));
 
 		centerPanel.add(rightPanel, "width :: ,top");
 
 		JPanel mapPanel = new JPanel();
-		mapPanel.setLayout(new MigLayout("insets 0 0 0 0"));
-		mapPanel.setBorder(BorderFactory.createTitledBorder("Boost List"));
+		mapPanel.setLayout(new MigLayout("width 260!, insets 10 10 10 10"));
+		mapPanel.setBorder(BorderFactory.createTitledBorder("Boost Information"));
 
 		rightPanel.add(mapPanel);
 
@@ -210,7 +203,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		JScrollPane tablePanel = new JScrollPane();
 		tablePanel.setViewportView(tcpMapRuleListTable);
 
-		mapPanel.add(tablePanel, "height 50:160:1024 ,growy,width :250:,wrap");
+		mapPanel.add(tablePanel, "height 50:160:1024,growy,growx,width :250:,wrap");
 		tablePanel.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -462,15 +455,19 @@ public class ClientUI implements ClientUII, WindowListener {
 			}
 		});
 
+		JPanel statePanel=new JPanel();
+		statePanel.setLayout(new MigLayout("insets 0 10 0 0 "));
+		
 		stateText = new JLabel("");
-		mainPanel.add(stateText, "align right ,wrap");
+		statePanel.add(stateText, "align right, wrap");
 
 		downloadSpeedField = new JLabel();
 		downloadSpeedField.setHorizontalAlignment(JLabel.RIGHT);
-		mainPanel.add(downloadSpeedField, "align right ");
-
+		statePanel.add(downloadSpeedField, "wrap, align right");
+		mapPanel.add(statePanel, "wrap, align right");
+		
 		updateUISpeed(0, 0, 0);
-		setMessage(" ");
+		setMessage("Not connected");
 
 		text_serverAddress.setSelectedItem(getServerAddressFromConfig());
 
@@ -589,10 +586,8 @@ public class ClientUI implements ClientUII, WindowListener {
 			}
 		}
 
-		System.out.println("TCP Environment Initialization Success:"+tcpEnvSuccess);
-		
 		try {
-			mapClient = new MapClient(this, tcpEnvSuccess);
+			mapClient = new MapClient(config.serverAddress, this, tcpEnvSuccess);
 		} catch (final Exception e1) {
 			e1.printStackTrace();
 			capException = e1;
@@ -601,22 +596,19 @@ public class ClientUI implements ClientUII, WindowListener {
 
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
-
 				@Override
 				public void run() {
-
 					if (!mapClient.route_tcp.capEnv.tcpEnable) {
 						if (isVisible) {
 							mainFrame.setVisible(true);
 						}
 						r_tcp.setEnabled(false);
 						r_udp.setSelected(true);
-						JOptionPane.showMessageDialog(mainFrame,"No available interfaces, fallback to UDP.");
+						if (isVisible) {
+							JOptionPane.showMessageDialog(mainFrame,"No available interfaces, fallback to UDP.");
+						}
 					}
-
-					// System.exit(0);
 				}
-
 			});
 		} catch (InvocationTargetException e2) {
 			e2.printStackTrace();
@@ -666,14 +658,14 @@ public class ClientUI implements ClientUII, WindowListener {
 		if (systemName.contains("os x")) {
 			String runFirewall = "ipfw";
 			try {
-				final Process p = Runtime.getRuntime().exec(runFirewall, null);
+				Runtime.getRuntime().exec(runFirewall, null);
 				osx_fw_ipfw = true;
 			} catch (IOException e) {
 				// e.printStackTrace();
 			}
 			runFirewall = "pfctl";
 			try {
-				final Process p = Runtime.getRuntime().exec(runFirewall, null);
+				Runtime.getRuntime().exec(runFirewall, null);
 				osx_fw_pf = true;
 			} catch (IOException e) {
 				// e.printStackTrace();
@@ -681,6 +673,11 @@ public class ClientUI implements ClientUII, WindowListener {
 			success_firewall_osx = osx_fw_ipfw | osx_fw_pf;
 		} else if (systemName.contains("linux")) {
 			String runFirewall = "service iptables start";
+			try {
+				Runtime.getRuntime().exec(runFirewall, null);
+			} catch (Exception e) {
+				//e.printStackTrace();
+			}
 		} else if (systemName.contains("windows")) {
 			String runFirewall = "netsh advfirewall set allprofiles state on";
 			Thread standReadThread = null;
@@ -1026,7 +1023,7 @@ public class ClientUI implements ClientUII, WindowListener {
 			fos.write(data);
 		} catch (Exception e) {
 			if (systemName.contains("windows")) {
-				JOptionPane.showMessageDialog(null, "保存配置文件失败,请尝试以管理员身份运行! "
+				JOptionPane.showMessageDialog(null, "Failed to save configuration file, try again with Administrator!"
 						+ path);
 				System.exit(0);
 			}
@@ -1039,8 +1036,8 @@ public class ClientUI implements ClientUII, WindowListener {
 	}
 
 	public void updateUISpeed(int conn, int downloadSpeed, int uploadSpeed) {
-		String string = " 下载:" + Tools.getSizeStringKB(downloadSpeed) + "/s"
-				+ " 上传:" + Tools.getSizeStringKB(uploadSpeed) + "/s";
+		String string = "Download:" + Tools.getSizeStringKB(downloadSpeed) + "/s"
+				+ "  Upload:" + Tools.getSizeStringKB(uploadSpeed) + "/s";
 		if (downloadSpeedField != null) {
 			downloadSpeedField.setText(string);
 		}
@@ -1099,7 +1096,7 @@ public class ClientUI implements ClientUII, WindowListener {
 				if (systemName.toLowerCase().contains("windows")) {
 					font = new Font("宋体", Font.PLAIN, 12);
 				} else {
-					font = new Font("Helvetica Neue", Font.PLAIN, 12);
+					font = new Font("San Francisco", Font.PLAIN, 12);
 				}
 				UIManager.put("ToolTip.font", font);
 				UIManager.put("Table.font", font);

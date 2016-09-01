@@ -5,11 +5,11 @@ package net.fs.cap;
 
 public class CapServer {
 	
-	CapServer(){
+	CapServer(String testIP){
 		CapEnv capEnv=null;
 		try {
 			capEnv=new CapEnv(false,true);
-			capEnv.init();
+			capEnv.init(testIP);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

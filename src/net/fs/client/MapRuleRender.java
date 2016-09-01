@@ -48,35 +48,30 @@ public class MapRuleRender extends JLabel implements TableCellRenderer {
 		}
 		String name=rule.getName();
 		if(name==null){
-			name="???";
+			name="None";
 		}else if(name.trim().equals("")){
-			name="???";
+			name="None";
 		}
-		label_wan_address.setText("??????: "+rule.name+"  ????????????: "+rule.dst_port);
-		label2.setText("????????????: "+rule.getListen_port());
+		label_wan_address.setText("Name: "+rule.name+"  Remote Port: "+rule.dst_port);
+		label2.setText("Local Port: "+rule.getListen_port());
 
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		Color fg = null;
-		Color bg = null;
 		JTable.DropLocation dropLocation = table.getDropLocation();
 		if (dropLocation != null
 				&& !dropLocation.isInsertRow()
 				&& !dropLocation.isInsertColumn()
 				&& dropLocation.getRow() == row
 				&& dropLocation.getColumn() == column) {
-
-			//fg = DefaultLookup.getColor(this, ui, "Table.dropCellForeground");
-			//bg = DefaultLookup.getColor(this, ui, "Table.dropCellBackground");
 			isSelected = true;
 		}
 		if (isSelected) {
-			//setBackground(DefaultLookup.getColor(this, ui, "Table.dropCellBackground"));
+			setBackground(Color.lightGray);
 		} else {
-			//setBackground( DefaultLookup.getColor(this, ui, "Table.alternateRowColor"));
+			setBackground(new Color(1f,1f,1f,1f));
 		}
 		MapRule rule=(MapRule)value;
 		update(rule,table,row);

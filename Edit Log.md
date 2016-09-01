@@ -28,10 +28,11 @@
   - Adding pcap4j's separate packet factory module to build path (Not in dependencies)
   - Added a few debug outputs
   - Force exit in some weird scenarios
+  - Pass in the server address as a parameter  
+  - Force test IP to the remote boost server
 - > Planned  
->  - Start a ping thread before the loop starts  
->  - Pass in the server address as a parameter  
->  - Force test IP to the remote boost server
+>  - Start a ping thread before the loop starts 
+  - Fixed the boost list selection bug 
   
-	The `Aug 31` version is archived as `1.0 Alpha`
+	The `Aug 31` version is archived as `Alpha 1.0`
  

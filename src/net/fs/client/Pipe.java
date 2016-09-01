@@ -82,7 +82,7 @@ public class Pipe {
 				if(ClientUI.ui!=null){
 					if(!msged){
 						msged=true;
-						String msg="??????"+dstPort+"????????????";
+						String msg="Successfully connected to port "+dstPort;
 						ClientUI.ui.setMessage(msg);
 						MLog.println(msg);
 					}

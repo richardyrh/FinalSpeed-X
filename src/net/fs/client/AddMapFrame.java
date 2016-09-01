@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import net.fs.rudp.Route;
 import net.miginfocom.swing.MigLayout;
 
 public class AddMapFrame extends JDialog{

@@ -101,8 +101,8 @@ public class CapEnv {
 		tcpManager=new TunManager(this);
 	}
 
-	public void init() throws Exception{
-		initInterface();
+	public void init(final String testIP) throws Exception{
+		initInterface(testIP);
 		Thread thread_process=new Thread(){
 
 			public void run(){
@@ -167,7 +167,7 @@ public class CapEnv {
 						for(int i=0;i<10;i++){
 							MLog.info("Resuming from Hibernation... "+(i+1));
 							try {
-								boolean success=initInterface();
+								boolean success=initInterface(testIP);
 								if(success){
 									MLog.info("Resuming Success"+(i+1));
 									break;
@@ -207,9 +207,9 @@ public class CapEnv {
 		return mode;
 	}
 	
-	boolean initInterface() throws Exception{
+	boolean initInterface(String testIP) throws Exception{
 		boolean success=false;
-		detectInterface();
+		detectInterface(testIP);
 		List<PcapNetworkInterface> allDevs = Pcaps.findAllDevs();
 		MLog.println("Network Interface List: ");
 		System.out.println("Expecting Interface "+selectedInterfaceName+" with Desc "+selectedInterfaceDes);
@@ -280,7 +280,7 @@ public class CapEnv {
 	
 	}
 
-	void detectInterface() {
+	void detectInterface(String testIP) {
 		List<PcapNetworkInterface> allDevs = null;
 		HashMap<PcapNetworkInterface, PcapHandle> handleTable=new HashMap<PcapNetworkInterface, PcapHandle>();
 		try {
@@ -318,6 +318,7 @@ public class CapEnv {
 								}
 								if(ipV4Packet!=null){
 									ipV4Header=ipV4Packet.getHeader();
+									System.out.println("expecting:"+testIp_tcp);
 									System.out.println("src:"+ipV4Header.getSrcAddr().getHostAddress());
 									System.out.println("dst:"+ipV4Header.getDstAddr().getHostAddress());
 									if(ipV4Header.getSrcAddr().getHostAddress().equals(testIp_tcp)){
@@ -387,7 +388,7 @@ public class CapEnv {
 		
 		//detectMac_udp();
 		try {
-			detectMac_tcp();
+			detectMac_tcp(testIP);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -470,11 +471,11 @@ public class CapEnv {
 		}
 	}
 	
-	private void detectMac_tcp() throws UnknownHostException{
+	private void detectMac_tcp(String testIp) throws UnknownHostException{
 		//InetAddress address=InetAddress.getByName("localhost");
 		final int por=80;
 		//testIp_tcp=address.getHostAddress();
-		testIp_tcp="31.220.43.151";
+		testIp_tcp=testIp;
 		System.out.println("test ip:"+testIp_tcp);
 		for(int i=0;i<5;i++){
 			try {

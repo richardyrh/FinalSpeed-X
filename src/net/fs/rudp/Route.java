@@ -87,7 +87,7 @@ public class Route {
 		es=executor;
 	}
 	
-	public Route(String pocessName,short routePort,int mode2,boolean tcp,boolean tcpEnvSuccess) throws Exception{
+	public Route(String testIP, String pocessName,short routePort,int mode2,boolean tcp,boolean tcpEnvSuccess) throws Exception{
 		
 		this.mode=mode2;
 		useTcpTun=tcp;
@@ -100,7 +100,7 @@ public class Route {
 				try {
 					capEnv=new CapEnv(false,tcpEnvSuccess);
 					capEnv.setListenPort(routePort);
-					capEnv.init();
+					capEnv.init(testIP);
 				} catch (Exception e) {
 					//e.printStackTrace();
 					throw e;
@@ -114,7 +114,7 @@ public class Route {
 				d.setClient(true);
 				try {
 					capEnv=new CapEnv(true,tcpEnvSuccess);
-					capEnv.init();
+					capEnv.init(testIP);
 				} catch (Exception e) {
 					//e.printStackTrace();
 					throw e;
