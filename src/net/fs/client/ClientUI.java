@@ -166,6 +166,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		checkPrivileges();
 		//TODO: Here
 		loadConfig();
+		System.out.println("server:"+config.serverAddress);
 		mainFrame.setTitle("FinalSpeed-X 1.0");
 		mainFrame.addWindowListener(this);
 		mainPanel = (JPanel) mainFrame.getContentPane();
@@ -183,13 +184,13 @@ public class ClientUI implements ClientUII, WindowListener {
 		centerPanel.setLayout(new MigLayout("insets 0 0 0 0"));
 
 		JPanel loginPanel = new JPanel();
-		centerPanel.add(loginPanel, "");
+		centerPanel.add(loginPanel, "top");
 		loginPanel.setLayout(new MigLayout("insets 0 0 0 0"));
-
+		
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new MigLayout("insets 0 0 0 0"));
 
-		centerPanel.add(rightPanel, "width :: ,top");
+		centerPanel.add(rightPanel, "width ::");
 
 		JPanel mapPanel = new JPanel();
 		mapPanel.setLayout(new MigLayout("width 260!, insets 10 10 10 10"));
@@ -264,14 +265,14 @@ public class ClientUI implements ClientUII, WindowListener {
 		JPanel pa = new JPanel();
 		pa.setBorder(BorderFactory.createTitledBorder("Server Details"));
 		pa.setLayout(new MigLayout("insets 0 5 0 0"));
-		loginPanel.add(pa, "growx,wrap");
+		loginPanel.add(pa, "width 265!, wrap");
 		JPanel p1 = new JPanel();
 		p1.setLayout(new MigLayout("insets 0 0 0 0"));
 		pa.add(p1, "wrap");
-		p1.add(new JLabel("Address:"), "width ::70");
+		p1.add(new JLabel("Address:"), "width 55!");
 		text_serverAddress = new JComboBox();
 		text_serverAddress.setToolTipText("Host:Port");
-		p1.add(text_serverAddress, "width 120!");
+		p1.add(text_serverAddress, "width 115!");
 		text_serverAddress.setEditable(true);
 		TextComponentPopupMenu.installToComponent(text_serverAddress);
 
@@ -373,7 +374,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		text_us.setEditable(false);
 
 		JPanel sp2 = new JPanel();
-		sp2.setLayout(new MigLayout("insets 0 0 0 0, width 252!"));
+		sp2.setLayout(new MigLayout("insets 0 0 0 0, width 253!"));
 		sp2.setBorder(BorderFactory.createTitledBorder("Miscellaneous"));
 		loginPanel.add(sp2, "align center,  wrap");
 
@@ -423,7 +424,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
 		
 		//TODO:HERE
-		button_site = createButton("Github Page");
+		button_site = createButton("Github");
 		p4.add(button_site);
 		button_site.addActionListener(new ActionListener() {
 

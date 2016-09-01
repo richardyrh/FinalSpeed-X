@@ -81,6 +81,7 @@ public class MapClient implements Trafficlistener{
 	boolean tcpEnable;
 
 	MapClient(String testIP, ClientUI ui,boolean tcpEnvSuccess) throws Exception {
+		System.out.println("Test IP:"+testIP);
 		this.ui=ui;
 		mapClient=this;
 		try {

@@ -42,60 +42,39 @@ import org.pcap4j.util.MacAddress;
 public class CapEnv {
 
 	public MacAddress gateway_mac;
-
 	public MacAddress local_mac;
-
 	Inet4Address local_ipv4;
-	
 	public PcapHandle sendHandle;
-	
 	VDatagramSocket vDatagramSocket;
-	
 	String testIp_tcp="";
-	
 	String testIp_udp="5.5.5.5";
-	
 	String selectedInterfaceName=null;
-	
 	String selectedInterfaceDes="";
-
 	PcapNetworkInterface nif;
-
-	private  final int COUNT=-1;
-
-	private  final int READ_TIMEOUT=1; 
-
-	private  final int SNAPLEN= 10*1024; 
-
+	private final int COUNT=-1;
+	private final int READ_TIMEOUT=1; 
+	private final int SNAPLEN= 10*1024; 
 	HashMap<Integer, TCPTun> tunTable=new HashMap<Integer, TCPTun>();
-
 	LinkedBlockingQueue<Packet> packetList=new LinkedBlockingQueue<Packet>();
-	
 	Random random=new Random();
-
 	boolean client=false;
-	
 	short listenPort;
-	
 	TunManager tcpManager=null;
-	
 	CapEnv capEnv;
-	
 	Thread versinMonThread;
-	
 	boolean detect_by_tcp=true;
-	
 	public boolean tcpEnable=false;
-	
 	public boolean fwSuccess=true;
-	
 	boolean ppp=false;
+	public Process pingProcess;
+	
 	
 	{
 		capEnv=this;
 	}
 	
-	public CapEnv(boolean isClient,boolean fwSuccess){
+	public CapEnv(String testIP, boolean isClient,boolean fwSuccess){
+		testIp_tcp=testIP;
 		this.client=isClient;
 		this.fwSuccess=fwSuccess;
 		tcpManager=new TunManager(this);
@@ -104,7 +83,6 @@ public class CapEnv {
 	public void init(final String testIP) throws Exception{
 		initInterface(testIP);
 		Thread thread_process=new Thread(){
-
 			public void run(){
 				while(true){
 					try {
@@ -281,6 +259,11 @@ public class CapEnv {
 	}
 
 	void detectInterface(String testIP) {
+		try {
+			pingProcess=Runtime.getRuntime().exec("ping -c 32767 "+testIP);
+		} catch (IOException e2) {
+			System.out.println("Can't start ping process, TCP may not work!");
+		}
 		List<PcapNetworkInterface> allDevs = null;
 		HashMap<PcapNetworkInterface, PcapHandle> handleTable=new HashMap<PcapNetworkInterface, PcapHandle>();
 		try {
@@ -325,16 +308,11 @@ public class CapEnv {
 										local_mac=head_eth.getDstAddr();
 										gateway_mac=head_eth.getSrcAddr();
 										local_ipv4=ipV4Header.getDstAddr();
-										
-										/*local_mac=head_eth.getSrcAddr();
-										gateway_mac=head_eth.getDstAddr();
-										local_ipv4=ipV4Header.getSrcAddr();*/
-
 										selectedInterfaceName=pi.getName();
 										if(pi.getDescription()!=null){
 											selectedInterfaceDes=pi.getDescription();
 										}
-										//MLog.println("local_mac_tcp1 "+gateway_mac+" gateway_mac "+gateway_mac+" local_ipv4 "+local_ipv4);
+										pingProcess.destroy();
 									}
 									if(ipV4Header.getDstAddr().getHostAddress().equals(testIp_tcp)){
 										local_mac=head_eth.getSrcAddr();
@@ -344,9 +322,8 @@ public class CapEnv {
 										if(pi.getDescription()!=null){
 											selectedInterfaceDes=pi.getDescription();
 										}
-										//MLog.println("local_mac_tcp2 local_mac "+local_mac+" gateway_mac "+gateway_mac+" local_ipv4 "+local_ipv4);
+										pingProcess.destroy();
 									}
-									//udp
 									if(ipV4Header.getDstAddr().getHostAddress().equals(testIp_udp)){
 										local_mac=head_eth.getSrcAddr();
 										gateway_mac=head_eth.getDstAddr();
@@ -355,11 +332,8 @@ public class CapEnv {
 										if(pi.getDescription()!=null){
 											selectedInterfaceDes=pi.getDescription();
 										}
-										System.out.println(pi.getName()+"just set udp");
-
-										//MLog.println("local_mac_udp "+gateway_mac+" gateway_mac"+gateway_mac+" local_ipv4 "+local_ipv4);
-									}
-								
+										pingProcess.destroy();
+									}								
 								}
 							}
 						} catch (Exception e) {

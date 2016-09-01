@@ -8,7 +8,7 @@ public class CapServer {
 	CapServer(String testIP){
 		CapEnv capEnv=null;
 		try {
-			capEnv=new CapEnv(false,true);
+			capEnv=new CapEnv(testIP,false,true);
 			capEnv.init(testIP);
 		} catch (Exception e) {
 			e.printStackTrace();
