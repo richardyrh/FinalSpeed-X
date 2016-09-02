@@ -4,18 +4,16 @@
 
  - Organize imports
  - Translation
- - When press save make sure UI remain stable
  - Modify UI of 'Add Forward'
  - Boost list encoding problems
  - Add in privilege detection
  - Remove unused import
- - Remove unused libraries
 
 `Aug 31`
 
  - Started project
  - Solved dependencies
- - Font change - *Helectiva Hueue* for non-Win systems
+ - Font change - *Helvetica Neue* for non-Win systems
  - Change home website to github page
  - Change Button scheme - insets to 0
  - Update URL temporarily set to localhost
@@ -47,3 +45,4 @@
  - Deleted unwanted reference libraries
  - Fixed some translation
  - Added the reference jars to the repository
+ - Tested UI compatibility for Windows
