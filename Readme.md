@@ -2,7 +2,9 @@
 
 **FinalSpeed-X** is a extended support project for FinalSpeed Java Client originally written by d1sm which was discontinued. FinalSpeed-X is mainly based on the code of FinalSpeed 1.12.
 
-###The client is a very early version. It's usable, but there are lots of bugs and known issues.
+The latest version is `Beta`.
+
+###Raise an issue for a bug or suggestion.
 
 > *Please note that the current version is only tested using Mac OS X El Capitan. Performance on other systems may be unpredictable.*  
 > *Although currently the project does contain code for server, it may not function correctly. Use separate server jar.*
@@ -35,18 +37,12 @@ To export it to a jar file, right click on the imported project, select export, 
 ##Note
 Due to the complicated dependencies and my limited abilities, I'm not spending time to try delete some server classes since sometimes they share a same component class with a client.
 
-### Why did I translate the project into English?
->面向国际社会 你们还要多学习一个  
->西方哪个国家我没去过  
->你们看不懂英文怎么和华莱士谈笑风生 怎么增长姿势水平  
->不学英语的话我就生气了  
->P.S. 忠于国家忠于党 牢记社会主义核心价值观 我为国家发展做贡献
+**Forgot to put in the language choosing dialog... Automatically reads `ch.lang`, deal with it yourself for now...**
 
 ##Known Issues
-* Encoding problems making characters show weirdly.
-* Both English and Chinese translation is not complete.
-* There are no root privelege detection for Mac/Linux yet.
-* The icon won't show properly under OS X dock.
+* The icon won't show properly under OS X dock.  
+
+> Basically everything works under my system...
 
 ##Update Log
 Can be found under the same directory as this readme file, or click [here](Edit Log.md).

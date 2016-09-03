@@ -1,5 +1,9 @@
 # Edit Log
 
+`TODO:`  
+ 
+ - Add language choosing screen
+
 `Aug 31`
 
  - Started project
