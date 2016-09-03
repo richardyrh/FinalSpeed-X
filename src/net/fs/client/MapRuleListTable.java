@@ -32,7 +32,7 @@ public class MapRuleListTable extends JTable{
 		
 		getColumnModel().getColumn(0).setMinWidth(30);
 				
-		MapRuleRender rr=new MapRuleRender();
+		MapRuleRender rr=new MapRuleRender(this.ui);
 		getColumnModel().getColumn(0).setCellRenderer(rr);
 		setRowHeight(70);
 		
@@ -83,7 +83,7 @@ public class MapRuleListTable extends JTable{
 		int index=getSelectedRow();
 		int modelIndex=convertRowIndexToModel(index);
 		MapRule mapRule=getModel().getMapRuleAt(modelIndex);
-		AddMapFrame sf=new AddMapFrame(ui,ui.mainFrame,mapRule,true);
+		new AddMapFrame(ui,ui.mainFrame,mapRule,true);
 		//sf.setVisible(true);
 	}
 	

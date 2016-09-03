@@ -10,22 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
 import net.fs.rudp.ClientProcessorInterface;
 import net.fs.rudp.ConnectionProcessor;
-import net.fs.rudp.RUDPConfig;
 import net.fs.rudp.Route;
 import net.fs.rudp.TrafficEvent;
 import net.fs.rudp.Trafficlistener;
-import net.fs.utils.MLog;
 import net.fs.utils.NetStatus;
 
 public class MapClient implements Trafficlistener{
@@ -85,6 +77,7 @@ public class MapClient implements Trafficlistener{
 		this.ui=ui;
 		mapClient=this;
 		try {
+			@SuppressWarnings("resource")
 			final ServerSocket socket=new ServerSocket(monPort);
 			new Thread(){
 				public void run(){
@@ -97,7 +90,6 @@ public class MapClient implements Trafficlistener{
 				}
 			}.start();
 		} catch (Exception e) {
-			//e.printStackTrace();
 			System.exit(0);
 		}
 		try {

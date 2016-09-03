@@ -1,0 +1,66 @@
+Saving Failed, Check Input!
+System:
+Boost Information
+Add
+Modify
+Delete
+Server Information
+Host:Port
+Are you sure you want to delete?
+Message
+Protocol:
+Physical Bandwidth
+Download:
+Upload:
+Miscellaneous
+Run on Startup
+This option is unavailable in non-Windows Environment.
+Show Log
+Save
+Github
+Exit
+Not connected
+Failed to run Windows Firewall. Launch it manually.
+Failed to run ipfw/pfctl. Install first.
+Install libpcap first, else tcp would be unavailable
+Install winpcap first, else tcp would be unavailable
+No available interfaces, fallback to UDP.
+Run in Administrator please, else FinalSpeed may lost some capabilities!
+Please run in Administrator, else there may be malfunction!
+Run with sudo please, else FinalSpeed may lost some capabilities!
+Please run in sudo, else there may be malfunction!
+Status:
+Failed to save configuration file, try again with Administrator!
+Failed to save configuration file, try again in sudo!
+Found New Version. Update?
+Add Forward
+Edit Forward
+The remote port you would like to boost.
+OK
+Name:
+Boost Port:
+Local Port:
+Cancel
+Enter Name
+Enter Address
+Enter a Proper Port
+Log
+Auto Scroll
+Clear
+None
+Connected to port
+No data from
+Connected to FS service
+Connected to FS but not port
+Can't connect to FS service
+Set Bandwidth
+In Mbps (1 Mbit=128 KBytes,10 Mbits=1.25 Mbytes)
+Precise input gives better boost effect.
+Done
+Incorrect Input!
+You have to manually set bandwidth information in client_config.json, or start up the application in non-CLI mode first.
+Address:
+Error
+: The name already exists.
+: Port occupied.
+Saving failed!

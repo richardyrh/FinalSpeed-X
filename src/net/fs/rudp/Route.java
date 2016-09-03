@@ -82,13 +82,12 @@ public class Route {
 	}
 	
 	static{
-		SynchronousQueue queue = new SynchronousQueue();
+		SynchronousQueue<Runnable> queue = new SynchronousQueue<>();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(100, Integer.MAX_VALUE, 10*1000, TimeUnit.MILLISECONDS, queue); 
 		es=executor;
 	}
 	
 	public Route(String testIP, String pocessName,short routePort,int mode2,boolean tcp,boolean tcpEnvSuccess) throws Exception{
-		System.out.println("route"+testIP);
 		this.mode=mode2;
 		useTcpTun=tcp;
 		this.pocessName=pocessName;
@@ -170,7 +169,6 @@ public class Route {
 					if(dp==null){
 						continue;
 					}
-					long t1=System.currentTimeMillis();
 					byte[] dpData=dp.getData();
 					
 					int sType=0;
@@ -275,7 +273,7 @@ public class Route {
 	public ConnectionProcessor createTunnelProcessor(){
 		ConnectionProcessor o=null;
 		try {
-			Class onwClass = Class.forName(pocessName);
+			Class<?> onwClass = Class.forName(pocessName);
 			o = (ConnectionProcessor) onwClass.newInstance();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

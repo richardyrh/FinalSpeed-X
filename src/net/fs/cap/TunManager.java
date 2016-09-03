@@ -47,9 +47,9 @@ public class TunManager {
 	}
 	
 	void scan(){
-		Iterator<String> it=getConnTableIterator();
+		Iterator<Object> it=getConnTableIterator();
 		while(it.hasNext()){
-			String key=it.next();
+			String key=(String) it.next();
 			TCPTun tun=connTable.get(key);
 			if(tun!=null){
 				if(tun.preDataReady){
@@ -74,8 +74,8 @@ public class TunManager {
 		connTable.remove(tun.key);
 	}
 	
-	Iterator<String> getConnTableIterator(){
-		Iterator<String> it=null;
+	Iterator<Object> getConnTableIterator(){
+		Iterator<Object> it=null;
 		synchronized (syn_scan) {
 			it=new CopiedIterator(connTable.keySet().iterator());
 		}

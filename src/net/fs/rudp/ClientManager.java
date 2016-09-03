@@ -43,7 +43,7 @@ public class ClientManager {
 	}
 	
 	void scanClientControl(){
-		Iterator<Integer> it=getClientTableIterator();
+		Iterator<Object> it=getClientTableIterator();
 		long current=System.currentTimeMillis();
 		//MLog.println("ffffffffffff "+clientTable.size());
 		while(it.hasNext()){
@@ -55,7 +55,7 @@ public class ClientManager {
 					}
 				}else {
 					//????????????client
-					MLog.println("????????????client "+cc.dstIp.getHostAddress()+":"+cc.dstPort+" "+new Date());
+					MLog.println("Client timeout, closing "+cc.dstIp.getHostAddress()+":"+cc.dstPort+" "+new Date());
 //					System.exit(0);
 					synchronized (syn_clientTable) {
 						cc.close();
@@ -69,8 +69,8 @@ public class ClientManager {
 		clientTable.remove(clientId);
 	}
 	
-	Iterator<Integer> getClientTableIterator(){
-		Iterator<Integer> it=null;
+	Iterator<Object> getClientTableIterator(){
+		Iterator<Object> it=null;
 		synchronized (syn_clientTable) {
 			it=new CopiedIterator(clientTable.keySet().iterator());
 		}

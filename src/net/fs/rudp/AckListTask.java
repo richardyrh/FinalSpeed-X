@@ -14,12 +14,11 @@ public class AckListTask {
 	AckListMessage alm;
 	int lastRead=0;
 	ArrayList<Integer> ackList;
-	@SuppressWarnings("unchecked")
-	HashSet set;
+	HashSet<Integer> set;
 	AckListTask(ConnectionUDP conn){
 		this.conn=conn;
-		ackList=new ArrayList();
-		set=new HashSet();
+		ackList=new ArrayList<>();
+		set=new HashSet<>();
 	}
 	
 	synchronized void addAck(int sequence){

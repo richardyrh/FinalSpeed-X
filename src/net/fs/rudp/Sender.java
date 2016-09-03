@@ -125,12 +125,12 @@ public class Sender {
 				sendOffset++;
 				s+=me.getData().length;
 				conn.clientControl.resendMange.addTask(conn, sequence);
-				sequence++;//???????????????
+				sequence++;//必须放最后
 			}else{
-				throw new ConnectException("RDP???????????????sendData");
+				throw new ConnectException("RDP connction broken sendData");
 			}
 		}else{
-			throw new ConnectException("RDP??????????????????");
+			throw new ConnectException("RDP connection closed");
 		}
 	
 	}
@@ -154,7 +154,6 @@ public class Sender {
 	void sendDataMessage(DataMessage me,boolean resend,boolean twice,boolean block){
 		synchronized (conn.clientControl.getSynlock()) {
 			long startTime=System.nanoTime();
-			long t1=System.currentTimeMillis();
 			conn.clientControl.onSendDataPacket(conn);
 			
 			int timeId=conn.clientControl.getCurrentTimeId();
@@ -163,13 +162,13 @@ public class Sender {
 
 			SendRecord record_current=conn.clientControl.getSendRecord(timeId);
 			if(!resend){
-				//???????????????????????????????????????
+				//第一次发，修改当前时间记录
 				me.setFirstSendTimeId(timeId);
 				me.setFirstSendTime(System.currentTimeMillis());
 				record_current.addSended_First(me.getData().length);
 				record_current.addSended(me.getData().length);
 			}else {
-				//??????????????????????????????????????????
+				//重发，修改第一次发送时间记录
 				SendRecord record=conn.clientControl.getSendRecord(me.getFirstSendTimeId());
 				record.addResended(me.getData().length);
 				record_current.addSended(me.getData().length);
@@ -180,11 +179,10 @@ public class Sender {
 				sum++;
 				unAckMax++;
 
-				long t=System.currentTimeMillis();
 				send(me.getDatagramPacket());
 				
 				if(twice){
-					send(me.getDatagramPacket());//?????????
+					send(me.getDatagramPacket());//发两次
 				}
 				if(block){
 					conn.clientControl.sendSleep(startTime, me.getData().length);
@@ -225,10 +223,10 @@ public class Sender {
 		}
 	}
 	
-	//?????????????????????
+	//删除后不会重发
 	void removeSended_Ack(int sequence){
 		synchronized (syn_send_table) {
-			DataMessage dm=sendTable.remove(sequence);
+			sendTable.remove(sequence);
 		}
 	}
 
@@ -277,7 +275,7 @@ public class Sender {
 		}
 	}
 	
-	void sendALMessage(ArrayList ackList){
+	void sendALMessage(ArrayList<Integer> ackList){
 		int currentTimeId=conn.receiver.getCurrentTimeId();
 		AckListMessage alm=new AckListMessage(conn.connetionId,ackList,conn.receiver.lastRead,conn
 				.clientControl.sendRecordTable_remote,currentTimeId,

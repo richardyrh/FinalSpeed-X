@@ -2,7 +2,6 @@
 
 package net.fs.rudp;
 
-import net.fs.utils.MLog;
 
 public class ConnectException extends Exception{
 	

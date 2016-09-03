@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/commons-cli-1.3.1/commons-cli-1.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Applications/MyEclipse 2015/MyEclipse 2015.app/Contents/Profile/plugins/com.genuitec.eclipse.j2eedt.core_13.0.0.me201505121703/data/libraryset/EE_7/javaee-api-7.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://docs.oracle.com/javaee/7/api/"/>
@@ -19,12 +18,13 @@
 			<attribute name="me-identifier" value="data/libraryset/EE_6//bean-validator.jar"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/spring-web-4.3.2.RELEASE.jar"/>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/spring-core-4.3.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/Landlord/miglayout15-swing.jar" sourcepath="/Landlord/miglayout-src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_73]"/>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/pcap4j.jar"/>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/fastjson.jar"/>
-	<classpathentry kind="lib" path="/Users/Richard/Downloads/jna-4.2.2.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/commons-cli-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/fastjson.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/jna-4.2.2.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/pcap4j.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/spring-core-4.3.2.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/Users/Richard/Documents/Git/FinalSpeed-X/reference_lib/spring-web-4.3.2.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

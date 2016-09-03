@@ -11,7 +11,6 @@ import java.util.Random;
 
 import net.fs.rudp.message.PingMessage;
 import net.fs.rudp.message.PingMessage2;
-import net.fs.utils.ByteIntConvert;
 import net.fs.utils.MLog;
 import net.fs.utils.MessageCheck;
 
@@ -92,10 +91,10 @@ public class ClientControl {
 	}
 
 	public void onReceivePacket(DatagramPacket dp){
-		byte[] dpData=dp.getData();
+		//byte[] dpData=dp.getData();
 		int sType=0;
 		sType=MessageCheck.checkSType(dp);
-		int remote_clientId=ByteIntConvert.toInt(dpData, 8);
+		//int remote_clientId=ByteIntConvert.toInt(dpData, 8);
 		if(sType==net.fs.rudp.message.MessageType.sType_PingMessage){
 			PingMessage pm=new PingMessage(dp);
 			sendPingMessage2(pm.getPingId(),dp.getAddress(),dp.getPort());
@@ -141,7 +140,7 @@ public class ClientControl {
 		closed=true;
 		route.clientManager.removeClient(clientId);
 		synchronized (syn_connTable) {
-			Iterator<Integer> it=getConnTableIterator();
+			Iterator<Object> it=getConnTableIterator();
 			while(it.hasNext()){
 				final ConnectionUDP conn=connTable.get(it.next());
 				if(conn!=null){
@@ -159,8 +158,8 @@ public class ClientControl {
 		}
 	}
 	
-	Iterator<Integer> getConnTableIterator(){
-		Iterator<Integer> it=null;
+	Iterator<Object> getConnTableIterator(){
+		Iterator<Object> it=null;
 		synchronized (syn_connTable) {
 			it=new CopiedIterator(connTable.keySet().iterator());
 		}

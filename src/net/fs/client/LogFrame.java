@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,7 +36,7 @@ public class LogFrame extends JFrame implements LogListener{
 	final int SCROLL_BUFFER_SIZE = 1000;
 	
 	LogFrame(ClientUI ui){
-		super("Log");
+		super(ui.lang.g(46));
 		this.ui=ui;
 		JPanel panel=(JPanel) getContentPane();
 		panel.setLayout(new MigLayout("insets 5 5 5 5"));
@@ -65,7 +64,7 @@ public class LogFrame extends JFrame implements LogListener{
 		panel.add(p3,"align center,wrap");
 		p3.setLayout(new MigLayout("inset 5 5 5 5"));
 
-		final JCheckBox cb_lock=new JCheckBox("Auto Scroll",autoScroll);
+		final JCheckBox cb_lock=new JCheckBox(ui.lang.g(47),autoScroll);
 		p3.add(cb_lock,"align center");
 		cb_lock.addActionListener(new ActionListener(){
 
@@ -76,7 +75,7 @@ public class LogFrame extends JFrame implements LogListener{
 
 		});
 		
-		JButton button_clear=createButton("Clear");
+		JButton button_clear=createButton(ui.lang.g(48));
 		p3.add(button_clear);
 		button_clear.addActionListener(new ActionListener() {
 			

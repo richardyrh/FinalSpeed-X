@@ -57,14 +57,14 @@ public class Receiver {
 		this.dstPort=conn.dstPort;
 	}
 
-	//???????????????
+	//接收流数据
 	public byte[] receive() throws ConnectException {
 		DataMessage me=null;
 		if(conn.isConnected()){
 			me=receiveTable.get(lastRead+1);
 			synchronized (availOb){
 				if(me==null){
-					//MLog.println("????????? "+conn.connectId+" "+(lastRead+1));
+					//MLog.println("等待中 "+conn.connectId+" "+(lastRead+1));
 
 					try {
 						availOb.wait();
@@ -72,18 +72,17 @@ public class Receiver {
 						e.printStackTrace();
 					}
 					me=receiveTable.get(lastRead+1);
-					//MLog.println("????????????aaa "+conn.connectId+" "+(lastRead+1));
 				}
 			}
 
 		}else{
-			throw new ConnectException("???????????????");
+			throw new ConnectException("Connection not established");
 		}
 
 		if(!streamClose){
 			checkCloseOffset_Remote();
 			if(me==null){
-				throw new ConnectException("???????????????ccccccc");
+				throw new ConnectException("Connection broken");
 			}else {
 			}
 			conn.sender.sendLastReadDelay();
@@ -97,7 +96,7 @@ public class Receiver {
 			//System.out.println("received "+received/1024/1024+"MB");
 			return me.getData();
 		}else{
-			throw new ConnectException("???????????????");
+			throw new ConnectException("Connection broken");
 		}
 	}
 
@@ -141,7 +140,7 @@ public class Receiver {
 						if(lastRead3>lastRead2){
 							lastRead2=lastRead3;
 						}
-						ArrayList ackList=alm.getAckList();
+						ArrayList<Integer> ackList=alm.getAckList();
 
 						for(int i=0;i<ackList.size();i++){
 							int sequence=(Integer) ackList.get(i);
@@ -177,10 +176,10 @@ public class Receiver {
 						int n=cm.getCloseOffset();
 						closeStream_Remote(n);
 					}else if(sType==net.fs.rudp.message.MessageType.sType_CloseMessage_Conn){
-						CloseMessage_Conn cm2=new CloseMessage_Conn(dp);
+						new CloseMessage_Conn(dp);
 						conn.close_remote();
 					}else{
-						////#MLog.println("?????????????????? "+sType);
+						////#MLog.println("未处理数据包 "+sType);
 					}
 				}
 

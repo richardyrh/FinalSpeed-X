@@ -3,7 +3,6 @@
 package net.fs.client;
 
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -39,44 +37,38 @@ public class AddMapFrame extends JDialog{
 		this.ui=ui;
 		this.edit=edit;
 		this.maprule_origin=maprule_origin;
-		setTitle("Add Forward");
-		//setSize(size);
+		setTitle(ui.lang.g(35));
 		if(edit){
-			setTitle("Edit Forward");
+			setTitle(ui.lang.g(36));
 		}
 		
 		JPanel panel=(JPanel) getContentPane();
-		panel.setLayout(new MigLayout("alignx center,aligny center,insets 10 10 10 10"));
-		
-		
-		String text="<html><head></head><body>"
-						+ "in Mbits per second<br>"
-						+ ""+"The value will directly affect the boost.</span></br></body></html>";
+		panel.setLayout(new MigLayout("alignx center,insets 5 5 5 5"));
 		
 		JPanel p3=new JPanel();
 		panel.add(p3,"wrap");
 		p3.setBorder(BorderFactory.createEtchedBorder());
 		p3.setLayout(new MigLayout("inset 5 5 5 5"));
 		
-		p3.add(new JLabel("Name:"));
+		p3.add(new JLabel(ui.lang.g(39)));
 		nameTextField=new JTextField();
-		p3.add(nameTextField,"width :100: ,wrap");
+		p3.add(nameTextField,"width 120! ,wrap");
 		
-		p3.add(new JLabel("Boost Port:"));
+		p3.add(new JLabel(ui.lang.g(40)));
 		portTextField=new JTextField("");
-		p3.add(portTextField,"width :50:,wrap");
-		portTextField.setToolTipText("The remote port you would want to boost.");
+		p3.add(portTextField,"width 120!,wrap");
+		portTextField.setToolTipText(ui.lang.g(37));
 		
-		p3.add(new JLabel("Local Port:"));
+		p3.add(new JLabel(ui.lang.g(41)));
 		text_port=new JTextField();
-		p3.add(text_port,"width :50: ,wrap");
+		p3.add(text_port,"width 120! ,wrap");
 
 		JPanel p6=new JPanel();
-		panel.add(p6,"align center,wrap");
-		p6.setLayout(new MigLayout("align center"));
+		panel.add(p6);
+		p6.setLayout(new MigLayout("width 190!"));
 		
-		JButton button_ok=createButton("OK");
-		p6.add(button_ok);
+		JButton button_ok=createButton(ui.lang.g(38));
+		p6.add(button_ok, "width 80!, left");
 		button_ok.addActionListener(new ActionListener() {
 			
 			@Override
@@ -102,15 +94,13 @@ public class AddMapFrame extends JDialog{
 					setVisible(false);
 				} catch (Exception e1) {
 					//e2.printStackTrace();
-					JOptionPane.showMessageDialog(ui.mainFrame, e1.getMessage(),"Message",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(ui.mainFrame, e1.getMessage(),ui.lang.g(9),JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		
-		p6.add(new JLabel(" "));
-		
-		JButton button_cancel=createButton("Cancel");
-		p6.add(button_cancel);
+		JButton button_cancel=createButton(ui.lang.g(42));
+		p6.add(button_cancel, "width 80!");
 		button_cancel.addActionListener(new ActionListener() {
 			
 			@Override
@@ -133,13 +123,13 @@ public class AddMapFrame extends JDialog{
 	
 	void checkName(String s) throws Exception{
 		if(s.trim().equals("")){
-			throw new Exception("Enter Name");
+			throw new Exception(ui.lang.g(43));
 		}
 	}
 	
 	void checkDstAddress(String s) throws Exception{
 		if(s.trim().equals("")){
-			throw new Exception("Enter Address");
+			throw new Exception(ui.lang.g(44));
 		}
 	}
 	
@@ -148,16 +138,16 @@ public class AddMapFrame extends JDialog{
 		try {
 			port=Integer.parseInt(s);
 		} catch (Exception e1) {
-			throw new Exception("Enter a Proper Port");
+			throw new Exception(ui.lang.g(45));
 		}
 		if(port<1|port>256*256){
-			throw new Exception("Enter a Proper Port");
+			throw new Exception(ui.lang.g(45));
 		}
 	}
 	
 	JButton createButton(String name){
 		JButton button=new JButton(name);
-		button.setMargin(new Insets(0,5,0,5));
+		button.setMargin(new Insets(0,0,0,0));
 		button.setFocusPainted(false);
 		return button;
 	}

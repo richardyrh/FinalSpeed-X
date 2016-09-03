@@ -2,10 +2,7 @@
 
 package net.fs.rudp;
 
-import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
-
 
 public class ResendManage implements Runnable{
 	

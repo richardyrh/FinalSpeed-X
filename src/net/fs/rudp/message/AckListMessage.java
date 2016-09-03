@@ -20,8 +20,7 @@ public class AckListMessage extends Message{
 
 	int r1,r2,r3,s1,s2,s3;
 
-	@SuppressWarnings("unchecked")
-	public AckListMessage(long connId,ArrayList ackList,int lastRead,
+	public AckListMessage(long connId,ArrayList<Integer> ackList,int lastRead,
 			HashMap<Integer, SendRecord> sendRecordTable,int timeId,
 			int connectId,int clientId){
 		this.clientId=clientId;
@@ -76,7 +75,7 @@ public class AckListMessage extends Message{
 		
 	}
 
-	public ArrayList getAckList(){
+	public ArrayList<Integer> getAckList(){
 		return ackList;
 	}
 

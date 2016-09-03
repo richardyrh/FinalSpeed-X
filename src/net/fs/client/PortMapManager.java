@@ -17,7 +17,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import net.fs.rudp.Route;
-import net.fs.utils.MLog;
 
 public class PortMapManager {
 	
@@ -37,7 +36,7 @@ public class PortMapManager {
 	
 	void addMapRule(MapRule mapRule) throws Exception{
 		if(getMapRule(mapRule.name)!=null){
-			throw new Exception("映射 "+mapRule.name+" 已存在,请修改名称!");
+			throw new Exception(mapRule.name+((ClientUI) mapClient.ui).lang.g(63));
 		}
 		ServerSocket serverSocket=null;
 		try {
@@ -48,7 +47,7 @@ public class PortMapManager {
 			saveMapRule();
 		} catch (IOException e2) {
 			//e2.printStackTrace();
-			throw new Exception("端口 "+mapRule.getListen_port()+" 已经被占用!");
+			throw new Exception(mapRule.getListen_port()+((ClientUI) mapClient.ui).lang.g(64));
 		}finally{
 //			if(serverSocket!=null){
 //				serverSocket.close();
@@ -78,7 +77,7 @@ public class PortMapManager {
 	
 	void updateMapRule(MapRule mapRule_origin,MapRule mapRule_new) throws Exception{
 		if(getMapRule(mapRule_new.name)!=null&&!mapRule_origin.name.equals(mapRule_new.name)){
-			throw new Exception("映射 "+mapRule_new.name+" 已存在,请修改名称!");
+			throw new Exception(mapRule_new.name+((ClientUI) mapClient.ui).lang.g(63));
 		}
 		ServerSocket serverSocket=null;
 		if(mapRule_origin.listen_port!=mapRule_new.listen_port){
@@ -94,7 +93,7 @@ public class PortMapManager {
 				mapRuleTable.put(mapRule_new.listen_port, mapRule_new);
 			} catch (IOException e2) {
 				//e2.printStackTrace();
-				throw new Exception("端口 "+mapRule_new.getListen_port()+" 已经被占用!");
+				throw new Exception(mapRule_new.getListen_port()+((ClientUI) mapClient.ui).lang.g(64));
 			}finally{
 //				if(serverSocket!=null){
 //					serverSocket.close();
@@ -128,7 +127,7 @@ public class PortMapManager {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("保存失败!");
+			throw new Exception(((ClientUI) mapClient.ui).lang.g(64));
 		}
 	}
 	
@@ -205,7 +204,7 @@ public class PortMapManager {
 									}else {
 										route=mapClient.route_udp;
 									}
-									PortMapProcess process=new PortMapProcess(mapClient,route, socket,mapClient.serverAddress,mapClient.serverPort,null, 
+									new PortMapProcess(mapClient,route, socket,mapClient.serverAddress,mapClient.serverPort,null, 
 											null,mapRule.dst_port);
 								}
 							}

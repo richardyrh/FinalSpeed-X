@@ -4,11 +4,6 @@ package net.fs.client;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import net.fs.rudp.ConnectionUDP;
 import net.fs.rudp.UDPInputStream;
@@ -35,8 +30,7 @@ public class Pipe {
 	
 	int dstPort=-1;
 
-	public void pipe(InputStream is,UDPOutputStream tos,int initSpeed,final Pipe p2) throws Exception{
-		
+	public void pipe(ClientUI ui,InputStream is,UDPOutputStream tos,int initSpeed,final Pipe p2) throws Exception{
 		int len=0;
 		byte[] buf=new byte[100*1024];
 		boolean sendeda=false;
@@ -69,7 +63,6 @@ public class Pipe {
 		byte[] buf=new byte[1000];
 		boolean sended=false;
 		boolean sendedb=false;
-		int n=0;
 		boolean msged=false;
 		while((len=tis.read(buf, 0, buf.length))>0){
 			readedLength+=len;
@@ -82,8 +75,8 @@ public class Pipe {
 				if(ClientUI.ui!=null){
 					if(!msged){
 						msged=true;
-						String msg="Successfully connected to port "+dstPort;
-						ClientUI.ui.setMessage(msg);
+							String msg=ClientUI.ui.lang.g(50)+" "+dstPort;
+							ClientUI.ui.setMessage(msg);
 						MLog.println(msg);
 					}
 					

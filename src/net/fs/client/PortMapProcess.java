@@ -39,11 +39,14 @@ public class PortMapProcess implements ClientProcessorInterface{
 	DataInputStream srcIs=null;
 	DataOutputStream srcOs=null;
 
+	ClientUI ui;
+	
 	boolean closed=false;
 	boolean success=false;
 
 	public PortMapProcess(MapClient mapClient,Route route,final Socket srcSocket,String serverAddress2,int serverPort2,String password_proxy_md5,
 			String dstAddress,final int dstPort){
+		this.ui=(ClientUI) mapClient.ui;
 		this.mapClient=mapClient;
 		this.serverAddress=serverAddress2;
 		this.serverPort=serverPort2;
@@ -74,7 +77,7 @@ public class PortMapProcess implements ClientProcessorInterface{
 			String hs=new String(responeData,"utf-8");
 			JSONObject responeJSon=JSONObject.parseObject(hs);
 			int code=responeJSon.getIntValue("code");
-			String message=responeJSon.getString("message");
+			//String message=responeJSon.getString("message");
 			String uimessage="";
 			if(code==Constant.code_success){
 
@@ -82,7 +85,6 @@ public class PortMapProcess implements ClientProcessorInterface{
 
 					@Override
 					public void run() {
-						long t=System.currentTimeMillis();
 						p2.setDstPort(dstPort);
 						try {
 							p2.pipe(tis, srcOs,1024*1024*1024,null);
@@ -92,7 +94,7 @@ public class PortMapProcess implements ClientProcessorInterface{
 							close();
 							if(p2.getReadedLength()==0){
 								//String msg="fs??????????????????,????????????"+dstPort+"????????????1";
-								String msg="No data from port "+dstPort;
+								String msg=ui.lang.g(51)+" "+dstPort;
 								MLog.println(msg);
 								ClientUI.ui.setMessage(msg);
 							}
@@ -106,7 +108,7 @@ public class PortMapProcess implements ClientProcessorInterface{
 					@Override
 					public void run() {
 						try {
-							p1.pipe(srcIs, tos,200*1024,p2);
+							p1.pipe(ui,srcIs, tos,200*1024,p2);
 						} catch (Exception e) {
 							//e.printStackTrace();
 						}finally{
@@ -116,17 +118,17 @@ public class PortMapProcess implements ClientProcessorInterface{
 
 				});
 				success=true;
-				uimessage=("Connected to FS service");
+				uimessage=(ui.lang.g(52));
 				ClientUI.ui.setMessage(uimessage);
 			}else {
 				close();
-				uimessage="Connect to FS service, but not port "+dstPort;
+				uimessage=ui.lang.g(53)+" "+dstPort;
 				ClientUI.ui.setMessage(uimessage);
 				MLog.println(uimessage);
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			String msg="Failed to connect to FS service";
+			String msg=ui.lang.g(54);
 			ClientUI.ui.setMessage(msg);
 			MLog.println(msg);
 		}

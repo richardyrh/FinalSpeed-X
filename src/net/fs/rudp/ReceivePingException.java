@@ -2,8 +2,6 @@
 
 package net.fs.rudp;
 
-import net.fs.utils.MLog;
-
 public class ReceivePingException extends Exception{
 	/**
 	 * 

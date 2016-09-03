@@ -75,7 +75,6 @@ public class StreamPipe {
 		}
 		Runnable thread=new Runnable(){
 			
-			int count=0;
 			public void run(){
 				byte[] data=new byte[BUF_SIZE];
 				int len=0;
@@ -92,7 +91,6 @@ public class StreamPipe {
 //						Log.println("?????????222 ");
 					}
 					//Log.println("pipe?????? 111 "+supserSocketId+" ");
-					boolean parsed=false;
 					try {
 						while((len=is.read(data))>0){
 							try {

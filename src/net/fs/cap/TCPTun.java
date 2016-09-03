@@ -193,19 +193,19 @@ public class TCPTun {
 						if(tcpHeader.getAcknowledgmentNumber()==localSequence){
 							MLog.println("Sending third handshake "+" ident "+ipV4Header.getIdentification());
 							MLog.println(packet+"");
-							Thread t1=new Thread(){
+							/*new Thread(){
 								public void run(){
 									//startSend(basePacket_server,syc_sequence_client+1);
 								}
 							};
-							//t1.start();
+							//t1.start();*/
 							connectReady=true;
 						}
 					}
 					//MLog.println("客户端响应preview\n "+packet);
 					//MLog.println("request "+tcp.ack());
 					sendedTable_server.remove(tcpHeader.getAcknowledgmentNumber());
-					boolean selfAck=selfAckTable.contains(ipV4Header.getIdentification());
+					//boolean selfAck=selfAckTable.contains(ipV4Header.getIdentification());
 					//MLog.println("客户端确认 "+"selfack "+selfAck+" id "+ipV4Header.getIdentification()+" ack_sequence "+tcpHeader.getAcknowledgmentNumberAsLong()+" "+sendedTable_server.size()+"ppppppp "+tcpHeader);
 				}
 				
@@ -235,10 +235,10 @@ public class TCPTun {
 	public void process_client(CapEnv capEnv,final Packet packet,EthernetHeader ethernetHeader,IpV4Header ipV4Header,TcpPacket tcpPacket,boolean client){
 
 		TcpHeader tcpHeader=tcpPacket.getHeader();
-		byte[] payload=null;
+		/*byte[] payload=null;
 		if(tcpPacket.getPayload()!=null){
 			payload=tcpPacket.getPayload().getRawData();
-		}
+		}*/
 
 		if(!preDataReady){
 			if(!connectReady){

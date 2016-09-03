@@ -3,10 +3,7 @@
 package net.fs.cap;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -25,7 +22,6 @@ import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
-import org.pcap4j.core.PcapStat;
 import org.pcap4j.core.Pcaps;
 import org.pcap4j.packet.EthernetPacket;
 import org.pcap4j.packet.EthernetPacket.EthernetHeader;
@@ -37,7 +33,6 @@ import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.TcpPacket.TcpHeader;
 import org.pcap4j.util.MacAddress;
-
 
 public class CapEnv {
 
@@ -240,7 +235,7 @@ public class CapEnv {
 				public void run(){
 					try {
 						handle.loop(COUNT, listener);
-						PcapStat ps = handle.getStats();
+						//PcapStat ps = handle.getStats();
 						handle.close();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -346,7 +341,7 @@ public class CapEnv {
 					public void run(){
 						try {
 							handle.loop(COUNT, listener);
-							PcapStat ps = handle.getStats();							
+							//PcapStat ps = handle.getStats();							
 							handle.close();
 						} catch (PcapNativeException | InterruptedException | NotOpenException e) {
 							if (!(e instanceof InterruptedException)) e.printStackTrace();
@@ -355,7 +350,7 @@ public class CapEnv {
 				};
 				thread.start();
 			} catch (PcapNativeException e1) {
-				e1.printStackTrace();
+				System.out.println("No permission to capture on device");
 			}
 			
 		}
@@ -397,7 +392,7 @@ public class CapEnv {
 				System.arraycopy(pppData, 8, ipData, 0, ipLength);
 				ipV4Packet=IpV4Packet.newPacket(ipData, 0, ipData.length);
 			}else {
-				MLog.println("长度不符!");
+				MLog.println("Length don't match!");
 			}
 		}
 		return ipV4Packet;
@@ -480,7 +475,7 @@ public class CapEnv {
 		}
 	}
 
-	private void detectMac_udp(){
+	/*private void detectMac_udp(){
 		for(int i=0;i<10;i++){
 			try {
 				DatagramSocket ds=new DatagramSocket();
@@ -503,7 +498,7 @@ public class CapEnv {
 			}
 		}
 
-	}
+	}*/
 
 	public short getListenPort() {
 		return listenPort;

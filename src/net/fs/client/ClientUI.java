@@ -1,11 +1,10 @@
 // Copyright (c) 2015 D1SM.net
-
+// and 2016 RCD-Y
 package net.fs.client;
 
 import java.awt.AWTException;
 import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -18,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -108,8 +106,8 @@ public class ClientUI implements ClientUII, WindowListener {
 	JTextField text_ds, text_us;
 
 	boolean ky = true;
-
-	String errorMsg = "Saving Failed, Check Input!";
+	
+	String errorMsg;
 
 	JButton button_site;
 
@@ -128,24 +126,21 @@ public class ClientUI implements ClientUII, WindowListener {
 	String systemName = null;
 
 	public boolean osx_fw_pf = false;
-
 	public boolean osx_fw_ipfw = false;
-
 	public boolean isVisible = true;
-
 	JRadioButton r_tcp, r_udp;
-
 	String updateUrl="http://localhost";
-
 	boolean min = false;
-
 	LogFrame logFrame;
-
 	LogOutputStream los;
-
 	boolean tcpEnable = true;
-
+	public LangList lang = new LangList();
+	
 	ClientUI(final boolean isVisible, boolean min) {
+		if (!lang.InitLangList("ch.lang")) {
+			MLog.println("Can't load language file.");
+		}
+		errorMsg=lang.g(0);
 		this.min = min;
 		setVisible(isVisible);
 
@@ -156,7 +151,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 
 		systemName = System.getProperty("os.name");
-		MLog.info("System: " + systemName + " "
+		MLog.info(lang.g(1) + systemName + " "
 				+ System.getProperty("os.version"));
 		ui = this;
 		mainFrame = new JFrame();
@@ -164,9 +159,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		mainFrame.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(logoImg)).getImage());
 		initUI();
 		checkPrivileges();
-		//TODO: Here
 		loadConfig();
-		System.out.println("server:"+config.serverAddress);
 		mainFrame.setTitle("FinalSpeed-X 1.0");
 		mainFrame.addWindowListener(this);
 		mainPanel = (JPanel) mainFrame.getContentPane();
@@ -194,7 +187,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
 		JPanel mapPanel = new JPanel();
 		mapPanel.setLayout(new MigLayout("width 260!, insets 10 10 10 10"));
-		mapPanel.setBorder(BorderFactory.createTitledBorder("Boost Information"));
+		mapPanel.setBorder(BorderFactory.createTitledBorder(lang.g(2)));
 
 		rightPanel.add(mapPanel);
 
@@ -219,17 +212,17 @@ public class ClientUI implements ClientUII, WindowListener {
 		JPanel p9 = new JPanel();
 		p9.setLayout(new MigLayout("insets 1 0 3 0 "));
 		mapPanel.add(p9, "align center,wrap");
-		JButton button_add = createButton("Add");
+		JButton button_add = createButton(lang.g(3));
 		p9.add(button_add);
 		button_add.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AddMapFrame sf = new AddMapFrame(ui, mainFrame, null, false);
+				new AddMapFrame(ui, mainFrame, null, false);
 			}
 
 		});
-		JButton button_edit = createButton("Modify");
+		JButton button_edit = createButton(lang.g(4));
 		p9.add(button_edit);
 		button_edit.addActionListener(new ActionListener() {
 
@@ -238,13 +231,13 @@ public class ClientUI implements ClientUII, WindowListener {
 				int index = tcpMapRuleListTable.getSelectedRow();
 				if (index > -1) {
 					MapRule mapRule = model.getMapRuleAt(index);
-					AddMapFrame sf = new AddMapFrame(ui, mainFrame, mapRule,
+					new AddMapFrame(ui, mainFrame, mapRule,
 							true);
 				}
 			}
 
 		});
-		JButton button_remove = createButton("Delete");
+		JButton button_remove = createButton(lang.g(5));
 		p9.add(button_remove);
 		button_remove.addActionListener(new ActionListener() {
 
@@ -263,20 +256,20 @@ public class ClientUI implements ClientUII, WindowListener {
 		});
 
 		JPanel pa = new JPanel();
-		pa.setBorder(BorderFactory.createTitledBorder("Server Details"));
+		pa.setBorder(BorderFactory.createTitledBorder(lang.g(6)));
 		pa.setLayout(new MigLayout("insets 0 5 0 0"));
 		loginPanel.add(pa, "width 265!, wrap");
 		JPanel p1 = new JPanel();
 		p1.setLayout(new MigLayout("insets 0 0 0 0"));
 		pa.add(p1, "wrap");
-		p1.add(new JLabel("Address:"), "width 55!");
-		text_serverAddress = new JComboBox();
-		text_serverAddress.setToolTipText("Host:Port");
+		p1.add(new JLabel(lang.g(61)), "width 55!");
+		text_serverAddress = new JComboBox<String>();
+		text_serverAddress.setToolTipText(lang.g(7));
 		p1.add(text_serverAddress, "width 115!");
 		text_serverAddress.setEditable(true);
 		TextComponentPopupMenu.installToComponent(text_serverAddress);
 
-		ListCellRenderer renderer = new AddressCellRenderer();
+		ListCellRenderer<Object> renderer = new AddressCellRenderer();
 		text_serverAddress.setRenderer(renderer);
 		text_serverAddress.setEditable(true);
 
@@ -296,8 +289,7 @@ public class ClientUI implements ClientUII, WindowListener {
 			text_serverAddress.setSelectedItem("");
 		}
 
-		//TODO: HERE
-		JButton button_removeAddress = createButton("Delete");
+		JButton button_removeAddress = createButton(lang.g(5));
 		p1.add(button_removeAddress,"width 70!");
 		button_removeAddress.addActionListener(new ActionListener() {
 
@@ -307,7 +299,7 @@ public class ClientUI implements ClientUII, WindowListener {
 						.toString();
 				if (!address.equals("")) {
 					int result = JOptionPane.showConfirmDialog(mainFrame,
-							"Are you sure you want to delete?", "Message", JOptionPane.YES_NO_OPTION);
+							lang.g(8), lang.g(9), JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
 						text_serverAddress.removeItem(address);
 						String selectText = "";
@@ -324,7 +316,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		JPanel panelr = new JPanel();
 		pa.add(panelr, "wrap");
 		panelr.setLayout(new MigLayout("insets 0 0 0 0"));
-		panelr.add(new JLabel("Protocol:"));
+		panelr.add(new JLabel(lang.g(10)),"width 55!");
 		r_tcp = new JRadioButton("TCP");
 		r_tcp.setFocusPainted(true);
 		panelr.add(r_tcp);
@@ -341,33 +333,32 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 
 		JPanel sp = new JPanel();
-		sp.setBorder(BorderFactory.createTitledBorder("Physical Bandwidth"));
+		sp.setBorder(BorderFactory.createTitledBorder(lang.g(11)));
 		sp.setLayout(new MigLayout("insets 0 5 0 0"));
 		JPanel pa1 = new JPanel();
 		sp.add(pa1, "wrap");
 		pa1.setLayout(new MigLayout("insets 0 0 0 0"));
 		loginPanel.add(sp, "wrap");
-		pa1.add(new JLabel("Download:"), "width 70!");
+		pa1.add(new JLabel(lang.g(12)), "width 70!");
 		text_ds = new JTextField("0");
 		pa1.add(text_ds, "width 100!");
 		text_ds.setHorizontalAlignment(JTextField.RIGHT);
 		text_ds.setEditable(false);
 
-		JButton button_set_speed = createButton("Modify");
+		JButton button_set_speed = createButton(lang.g(4));
 		pa1.add(button_set_speed, "width 70!");
 		button_set_speed.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SpeedSetFrame sf = new SpeedSetFrame(ui, mainFrame);
+				new SpeedSetFrame(ui, mainFrame);
 			}
 		});
-//TODO:here
 		JPanel pa2 = new JPanel();
 		sp.add(pa2, "wrap");
 		pa2.setLayout(new MigLayout("insets 0 0 0 0"));
 		loginPanel.add(sp, "wrap");
-		pa2.add(new JLabel("Upload:"), "width 70!");
+		pa2.add(new JLabel(lang.g(13)), "width 70!");
 		text_us = new JTextField("0");
 		pa2.add(text_us, "width 100!");
 		text_us.setHorizontalAlignment(JTextField.RIGHT);
@@ -375,10 +366,10 @@ public class ClientUI implements ClientUII, WindowListener {
 
 		JPanel sp2 = new JPanel();
 		sp2.setLayout(new MigLayout("insets 0 0 0 0, width 253!"));
-		sp2.setBorder(BorderFactory.createTitledBorder("Miscellaneous"));
+		sp2.setBorder(BorderFactory.createTitledBorder(lang.g(14)));
 		loginPanel.add(sp2, "align center,  wrap");
 
-		final JCheckBox cb = new JCheckBox("Run on Startup", config.isAutoStart());
+		final JCheckBox cb = new JCheckBox(lang.g(15), config.isAutoStart());
 		sp2.add(cb, "width 132!");
 		cb.addActionListener(new ActionListener() {
 
@@ -389,13 +380,13 @@ public class ClientUI implements ClientUII, WindowListener {
 					saveConfig();
 					setAutoRun(config.isAutoStart());
 				} else {
-					JOptionPane.showMessageDialog(mainFrame, "This option is unavailable in non-Windows Environment.");
+					JOptionPane.showMessageDialog(mainFrame, lang.g(16));
 					cb.setSelected(false);
 				}
 			}
 
 		});
-		JButton button_show_log = createButton("Show Log");
+		JButton button_show_log = createButton(lang.g(17));
 		sp2.add(button_show_log, "wrap, width 115!");
 		button_show_log.addActionListener(new ActionListener() {
 
@@ -419,12 +410,11 @@ public class ClientUI implements ClientUII, WindowListener {
 		JPanel p4 = new JPanel();
 		p4.setLayout(new MigLayout("insets 5 0 0 0 "));
 		loginPanel.add(p4, "align center,wrap");
-		JButton button_save = createButton("Save");
+		JButton button_save = createButton(lang.g(18));
 		p4.add(button_save);
 
 		
-		//TODO:HERE
-		button_site = createButton("Github");
+		button_site = createButton(lang.g(19));
 		p4.add(button_site);
 		button_site.addActionListener(new ActionListener() {
 
@@ -434,7 +424,7 @@ public class ClientUI implements ClientUII, WindowListener {
 			}
 		});
 
-		JButton button_exit = createButton("Exit");
+		JButton button_exit = createButton(lang.g(20));
 		p4.add(button_exit);
 		button_exit.addActionListener(new ActionListener() {
 
@@ -468,7 +458,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		mapPanel.add(statePanel, "wrap, align right");
 		
 		updateUISpeed(0, 0, 0);
-		setMessage("Not connected");
+		setMessage(lang.g(21));
 
 		text_serverAddress.setSelectedItem(getServerAddressFromConfig());
 
@@ -502,7 +492,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 		MenuItem item3;
 		try {
-			item3 = new MenuItem("Exit");
+			item3 = new MenuItem(lang.g(20));
 			ActionListener al = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					exit();
@@ -516,15 +506,13 @@ public class ClientUI implements ClientUII, WindowListener {
 
 		boolean tcpEnvSuccess = true;
 		checkFireWallOn();
-		//TODO:HERE
 		if (!success_firewall_windows) {
 			tcpEnvSuccess = false;
 			if (isVisible) {
 				mainFrame.setVisible(true);
-				JOptionPane.showMessageDialog(mainFrame,
-						"Failed to run Windows Firewall. Launch it manually.");
+				JOptionPane.showMessageDialog(mainFrame, lang.g(22));
 			}
-			MLog.println("Failed to run Windows Firewall. Launch it manually.");
+			MLog.println(lang.g(22));
 			System.exit(0);
 		}
 		if (!success_firewall_osx) {
@@ -532,9 +520,9 @@ public class ClientUI implements ClientUII, WindowListener {
 			if (isVisible) {
 				mainFrame.setVisible(true);
 				JOptionPane.showMessageDialog(mainFrame,
-						"Failed to run ipfw/pfctl. Install first.");
+						lang.g(23));
 			}
-			MLog.println("Failed to run ipfw/pfctl. Install first.");
+			MLog.println(lang.g(23));
 		}
 
 		Thread thread = new Thread() {
@@ -559,9 +547,9 @@ public class ClientUI implements ClientUII, WindowListener {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override
 					public void run() {
-						String msg = "Install libpcap first, else tcp would be unavailable";
+						String msg = lang.g(24);
 						if (systemName.contains("windows")) {
-							msg = "Install winpcap first, else tcp would be unavailable";
+							msg = lang.g(25);
 						}
 						if (isVisible) {
 							mainFrame.setVisible(true);
@@ -570,8 +558,7 @@ public class ClientUI implements ClientUII, WindowListener {
 						MLog.println(msg);
 						if (systemName.contains("windows")) {
 							try {
-								Process p = Runtime.getRuntime().exec(
-										"winpcap_install.exe", null);
+								Runtime.getRuntime().exec("winpcap_install.exe", null);
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -606,7 +593,7 @@ public class ClientUI implements ClientUII, WindowListener {
 						r_tcp.setEnabled(false);
 						r_udp.setSelected(true);
 						if (isVisible) {
-							JOptionPane.showMessageDialog(mainFrame,"No available interfaces, fallback to UDP.");
+							JOptionPane.showMessageDialog(mainFrame,lang.g(26));
 						}
 					}
 				}
@@ -639,7 +626,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		loadMapRule();
 
 		if (config.getDownloadSpeed() == 0 || config.getUploadSpeed() == 0) {
-			SpeedSetFrame sf = new SpeedSetFrame(ui, mainFrame);
+			new SpeedSetFrame(ui, mainFrame);
 		}
 
 	}
@@ -724,9 +711,9 @@ public class ClientUI implements ClientUII, WindowListener {
 								if (line == null) {
 									break;
 								} else {
-									System.out.println("error" + line);
+									System.out.println(lang.g(62) + line);
 								}
-							} catch (IOException e) {
+							} catch (IOException e) { 
 								e.printStackTrace();
 								// error();
 								exit();
@@ -763,21 +750,40 @@ public class ClientUI implements ClientUII, WindowListener {
 	void checkPrivileges() {
 		if (systemName.toLowerCase().contains("windows")) {
 			boolean b = false;
-			File file = new File(System.getenv("WINDIR") + "\\test.file");
+			File file = new File(System.getenv("WINDIR") + "\\fstest.file");
 			try {
+				if (file.exists()) file.delete();
 				file.createNewFile();
+				b = file.exists();
+				file.delete();
 			} catch (IOException e) {
-				e.printStackTrace();
+				b=false;
 			}
-			b = file.exists();
-			file.delete();
 			if (!b) {
 				if (isVisible) {
 					JOptionPane.showMessageDialog(null,
-							"Run in Administrator Please!");
+							lang.g(27));
 				}
-				MLog.println("Please run in Administrator, else there may be malfunction!");
+				MLog.println(lang.g(28));
 				// System.exit(0);
+			}
+		} else {
+			boolean b = false;
+			File file = new File("/etc/fstest.file");
+			try {
+				if (file.exists()) file.delete();
+				file.createNewFile();
+				b = file.exists();
+				file.delete();
+			} catch (IOException e) {
+				b=false;
+			}
+			if (!b) {
+				if (isVisible) {
+					JOptionPane.showMessageDialog(null,
+							lang.g(29));
+				}
+				MLog.println(lang.g(30));
 			}
 		}
 	}
@@ -824,7 +830,7 @@ public class ClientUI implements ClientUII, WindowListener {
 	}
 
 	public void setMessage(String message) {
-		stateText.setText("Status: " + message);
+		stateText.setText(lang.g(31)+" " + message);
 	}
 
 	ClientConfig loadConfig() {
@@ -962,7 +968,7 @@ public class ClientUI implements ClientUII, WindowListener {
 							@Override
 							public void run() {
 								JOptionPane.showMessageDialog(mainFrame,
-										errorMsg, "Error",
+										errorMsg, lang.g(62),
 										JOptionPane.ERROR_MESSAGE);
 							}
 						});
@@ -1024,9 +1030,11 @@ public class ClientUI implements ClientUII, WindowListener {
 			fos.write(data);
 		} catch (Exception e) {
 			if (systemName.contains("windows")) {
-				JOptionPane.showMessageDialog(null, "Failed to save configuration file, try again with Administrator!"
+				JOptionPane.showMessageDialog(null, lang.g(32)+" "
 						+ path);
-				System.exit(0);
+			} else {
+				JOptionPane.showMessageDialog(null, lang.g(33)+" "
+						+ path);
 			}
 			throw e;
 		} finally {
@@ -1037,8 +1045,8 @@ public class ClientUI implements ClientUII, WindowListener {
 	}
 
 	public void updateUISpeed(int conn, int downloadSpeed, int uploadSpeed) {
-		String string = "Download:" + Tools.getSizeStringKB(downloadSpeed) + "/s"
-				+ "  Upload:" + Tools.getSizeStringKB(uploadSpeed) + "/s";
+		String string = lang.g(12) + Tools.getSizeStringKB(downloadSpeed) + "/s"
+				+ "  "+lang.g(13) + Tools.getSizeStringKB(uploadSpeed) + "/s";
 		if (downloadSpeedField != null) {
 			downloadSpeedField.setText(string);
 		}
@@ -1080,7 +1088,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 		if (this.haveNewVersion()) {
 			int option = JOptionPane.showConfirmDialog(mainFrame,
-					"Found New Version. Update?", "Reminder",
+					lang.g(34), lang.g(9),
 					JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
 				openUrl(homeUrl);

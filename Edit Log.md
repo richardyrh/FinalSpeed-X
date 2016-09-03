@@ -1,14 +1,5 @@
 # Edit Log
 
-`TODO:`
-
- - Organize imports
- - Translation
- - Modify UI of 'Add Forward'
- - Boost list encoding problems
- - Add in privilege detection
- - Remove unused import
-
 `Aug 31`
 
  - Started project
@@ -30,7 +21,7 @@
   - Force test IP to the remote boost server
   - Fixed the boost list selection bug 
   
-	The `Aug 31` version is archived as `Alpha 1.0`
+	The `Aug 31` version is archived as `Alpha`
  
 ** **
  
@@ -46,3 +37,25 @@
  - Fixed some translation
  - Added the reference jars to the repository
  - Tested UI compatibility for Windows
+
+** **
+
+ `Sep 2 and Sep 3`
+ 
+ - Implemented language module
+ - Added two language files
+ - Add privilege testing for Mac/Linux
+ - Modified some details for UI
+ - Tested on Ubuntu 16.04.1 LTS
+  - UDP seems to work just fine
+  - TCP didn't work on my VMware Fusion machine, will try a real hardware soon
+ - Fixed a bug that may exist on previous versions causing UDP connection failure
+ - Made a small change to Map cell renderer
+ - Removed all unused imports
+ - Deleted declarations for unused variables
+ - Fixed raw type warnings
+ - Removed some unecessary code
+ 
+ This version is archived as `Beta`.
+ 
+ **Raise an issue if there's any bug or suggestions.**

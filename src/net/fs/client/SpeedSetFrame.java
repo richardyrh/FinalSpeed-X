@@ -30,24 +30,24 @@ public class SpeedSetFrame extends JDialog{
 		super(parent,Dialog.ModalityType.APPLICATION_MODAL);
 		this.ui=ui;
 		setResizable(false);
-		setTitle("Set Bandwidth");
+		setTitle(ui.lang.g(55));
 		
 		JPanel panel=(JPanel) getContentPane();
 		panel.setLayout(new MigLayout("alignx center,aligny center,insets 10 10 10 10"));
 		
 		
-		panel.add(new JLabel("In Mbps (1 Mbit=128 KBytes,10 Mbits=1.25 Mbytes)"),"height ::,wrap");
-		panel.add(new JLabel("Precise input gives better boost effect."),"height ::,wrap");
+		panel.add(new JLabel(ui.lang.g(56)),"height ::,wrap");
+		panel.add(new JLabel(ui.lang.g(57)),"height ::,wrap");
 
 		JPanel p5=new JPanel();
 		panel.add(p5,"wrap");
 		p5.setLayout(new MigLayout("insets 0 0 0 0"));
-		p5.add(new JLabel("Download:"));
+		p5.add(new JLabel(ui.lang.g(12)));
 		text_ds=new JTextField("");
 		p5.add(text_ds,"width 70::");
 		p5.add(new JLabel("Mbps"));
 		p5.add(new JLabel("  "));
-		p5.add(new JLabel("Upload:"));
+		p5.add(new JLabel(ui.lang.g(13)));
 		text_us=new JTextField("");
 		p5.add(text_us,"width 70::");
 		//text_us.setEditable(false);
@@ -57,7 +57,7 @@ public class SpeedSetFrame extends JDialog{
 		panel.add(p6,"align center,wrap");
 		p6.setLayout(new MigLayout("align center, insets 0 0 0 0"));
 		
-		JButton button_ok=createButton("Done");
+		JButton button_ok=createButton(ui.lang.g(58));
 		p6.add(button_ok);
 		button_ok.addActionListener(new ActionListener() {
 			
@@ -72,7 +72,7 @@ public class SpeedSetFrame extends JDialog{
 					setVisible(false);
 				} catch (Exception e2) {
 					//e2.printStackTrace();
-					JOptionPane.showMessageDialog(ui.mainFrame, "Incorrect Input!");
+					JOptionPane.showMessageDialog(ui.mainFrame, ui.lang.g(59));
 				}
 				
 			}
@@ -80,7 +80,7 @@ public class SpeedSetFrame extends JDialog{
 		
 		p6.add(new JLabel(" "));
 		
-		JButton button_cancel=createButton("Cancel");
+		JButton button_cancel=createButton(ui.lang.g(42));
 		p6.add(button_cancel);
 		button_cancel.addActionListener(new ActionListener() {
 			
@@ -95,8 +95,7 @@ public class SpeedSetFrame extends JDialog{
 		if(ui.isVisible){
 			setVisible(true);
 		} else {
-			MLog.println("You have to manually set bandwidth information in client_config.json, "
-					+ "or start up the application in non-CLI mode first.");
+			MLog.println(ui.lang.g(60));
 			System.exit(0);
 		}
 	}

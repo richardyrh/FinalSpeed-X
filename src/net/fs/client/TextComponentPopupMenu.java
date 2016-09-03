@@ -108,9 +108,6 @@ public class TextComponentPopupMenu extends JPopupMenu implements
 
 	public void actionPerformed(ActionEvent e) {
 		JTextComponent tc = (JTextComponent) getInvoker();
-
-		String sel = tc.getSelectedText();
-
 		if (e.getSource() == cutItem) {
 			tc.cut();
 		} else if (e.getSource() == copyItem) {

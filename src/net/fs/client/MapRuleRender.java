@@ -21,17 +21,25 @@ public class MapRuleRender extends JLabel implements TableCellRenderer {
 	JPanel pleft,pright,p1;
 
 	JLabel label_wan_address;
+	JLabel label_DstPort;
 	JLabel label2;
 
 	MapRule rule;
 
-	{
+	ClientUI ui;
+	
+	public MapRuleRender(ClientUI ui) {
+		this.ui=ui;
 		setOpaque(true);
 		setLayout(new MigLayout("insets 8 10 0 0"));
 		label_wan_address=new JLabel();
 		add(label_wan_address,"width :500:,wrap");
 		label_wan_address.setBackground(new Color(0f,0f,0f,0f));
 		label_wan_address.setOpaque(true);
+		label_DstPort=new JLabel();
+		add(label_DstPort,"width :500:");
+		label_DstPort.setBackground(new Color(0f,0f,0f,0f));
+		label_DstPort.setOpaque(true);
 		label2=new JLabel();
 		add(label2,"width :500:,wrap");
 		label2.setBackground(new Color(0f,0f,0f,0f));
@@ -48,12 +56,13 @@ public class MapRuleRender extends JLabel implements TableCellRenderer {
 		}
 		String name=rule.getName();
 		if(name==null){
-			name="None";
+			name=ui.lang.g(49);
 		}else if(name.trim().equals("")){
-			name="None";
+			name=ui.lang.g(49);
 		}
-		label_wan_address.setText("Name: "+rule.name+"  Remote Port: "+rule.dst_port);
-		label2.setText("Local Port: "+rule.getListen_port());
+		label_wan_address.setText(ui.lang.g(39)+" "+rule.name);
+		label_DstPort.setText(ui.lang.g(40)+" "+rule.dst_port);
+		label2.setText(ui.lang.g(41)+" "+rule.getListen_port());
 
 	}
 
