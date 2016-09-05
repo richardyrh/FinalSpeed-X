@@ -83,6 +83,8 @@ public class ClientUI implements ClientUII, WindowListener {
 
 	String logoImg = "img/offline.png";
 
+	String langFile = "en.lang";
+	
 	String offlineImg = "img/offline.png";
 
 	String name = "FinalSpeed";
@@ -93,7 +95,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
 	int serverVersion = -1;
 
-	int localVersion = 3;
+	int localVersion = 1;
 
 	boolean checkingUpdate = false;
 
@@ -137,9 +139,13 @@ public class ClientUI implements ClientUII, WindowListener {
 	public LangList lang = new LangList();
 	
 	ClientUI(final boolean isVisible, boolean min) {
-		if (!lang.InitLangList("ch.lang")) {
+		MLog.info("Loading Config...");
+		loadConfig();
+		MLog.info("Loading Language...");
+		if (!lang.InitLangList(config.getLangFile())) {
 			MLog.println("Can't load language file.");
 		}
+
 		errorMsg=lang.g(0);
 		this.min = min;
 		setVisible(isVisible);
@@ -149,7 +155,7 @@ public class ClientUI implements ClientUII, WindowListener {
 			System.setOut(los);
 			System.setErr(los);
 		}
-
+		
 		systemName = System.getProperty("os.name");
 		MLog.info(lang.g(1) + systemName + " "
 				+ System.getProperty("os.version"));
@@ -159,7 +165,6 @@ public class ClientUI implements ClientUII, WindowListener {
 		mainFrame.setIconImage(new ImageIcon(getClass().getClassLoader().getResource(logoImg)).getImage());
 		initUI();
 		checkPrivileges();
-		loadConfig();
 		mainFrame.setTitle("FinalSpeed-X 1.0");
 		mainFrame.addWindowListener(this);
 		mainPanel = (JPanel) mainFrame.getContentPane();
@@ -641,6 +646,11 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 		return server_addressTxt;
 	}
+	
+	void changeLang(String newLang) {
+		langFile=newLang;
+		saveConfig();
+	}
 
 	void checkFireWallOn() {
 		if (systemName.contains("os x")) {
@@ -846,6 +856,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		try {
 			String content = readFileUtf8(configFilePath);
 			JSONObject json = JSONObject.parseObject(content);
+			cfg.setLangFile(json.getString("lang_file"));
 			cfg.setServerAddress(json.getString("server_address"));
 			cfg.setServerPort(json.getIntValue("server_port"));
 			cfg.setRemotePort(json.getIntValue("remote_port"));
@@ -908,12 +919,15 @@ public class ClientUI implements ClientUII, WindowListener {
 						}
 					}
 
+					String langFile = ui.langFile;
+					
 					String protocol = "tcp";
 					if (r_udp.isSelected()) {
 						protocol = "udp";
 					}
 
 					JSONObject json = new JSONObject();
+					json.put("lang_file", langFile);
 					json.put("server_address", serverAddress);
 					json.put("server_port", serverPort);
 					json.put("download_speed", config.getDownloadSpeed());

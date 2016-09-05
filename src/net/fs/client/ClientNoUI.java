@@ -66,6 +66,7 @@ public class ClientNoUI implements ClientUII{
 		try {
 			String content=readFileUtf8(configFilePath);
 			JSONObject json=JSONObject.parseObject(content);
+			cfg.setLangFile(json.getString("lang_file"));
 			cfg.setServerAddress(json.getString("server_address"));
 			cfg.setServerPort(json.getIntValue("server_port"));
 			cfg.setRemotePort(json.getIntValue("remote_port"));
@@ -193,25 +194,21 @@ public class ClientNoUI implements ClientUII{
 
 	@Override
 	public boolean login() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean updateNode(boolean testSpeed) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isOsx_fw_pf() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isOsx_fw_ipfw() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

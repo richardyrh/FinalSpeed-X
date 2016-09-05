@@ -22,10 +22,16 @@ public class ClientConfig {
 	
 	String Protocol="tcp";
 	
+	String langFile="en.lang";
+	
 	boolean autoStart=false;
 	
 	ArrayList<String> recentAddressList=new ArrayList<String>();
 
+	public String getLangFile() {
+		return langFile;
+	}
+	
 	public String getServerAddress() {
 		return serverAddress;
 	}
@@ -106,6 +112,10 @@ public class ClientConfig {
 		this.autoStart = autoStart;
 	}
 
+	public void setLangFile(String langFile) {
+		this.langFile=langFile;
+	}
+	
 	public ArrayList<String> getRecentAddressList() {
 		return recentAddressList;
 	}
