@@ -131,7 +131,7 @@ public class ClientUI implements ClientUII, WindowListener {
 	public boolean osx_fw_ipfw = false;
 	public boolean isVisible = true;
 	JRadioButton r_tcp, r_udp;
-	String updateUrl="http://localhost";
+	String updateUrl="https://raw.githubusercontent.com/RCD-Y/FinalSpeed-X/master/version.properties";
 	boolean min = false;
 	LogFrame logFrame;
 	LogOutputStream los;
