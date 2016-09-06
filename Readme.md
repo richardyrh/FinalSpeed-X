@@ -2,26 +2,25 @@
 
 **FinalSpeed-X** is a extended support project for FinalSpeed Java Client originally written by d1sm which was discontinued. FinalSpeed-X is mainly based on the code of FinalSpeed 1.12.
 
-The latest version is `Beta`.
+The latest version is `1.0`.
+
+The client is completely compatible with current FinalSpeed servers (You still can't use TCP on an Open-VZ server though).
 
 ###Raise an issue for a bug or suggestion.
-
-> *Please note that the current version is only tested using Mac OS X El Capitan. Performance on other systems may be unpredictable.*  
-> *Although currently the project does contain code for server, it may not function correctly. Use separate server jar.*
 
 ##For Non-Developers
 Download the zip, then run the client using  
 *For Mac/Linux Users*  
 >If you haven't installed libpcap, install it first.
 	
-	sudo java -jar FinalSpeed-X\ Beta.jar
+	sudo java -jar FinalSpeed-X\ 1.0.jar
 	
 *For Windows Users*
 >If you haven't installed winpcap, install it first.
 
 Create a batch file under the same directory as the client, name it whatever you want to, ending with ".bat". Inside the batch file, type in one line of code:
 
-	java -jar "FinalSpeed-X Beta.jar"
+	java -jar "FinalSpeed-X 1.0.jar"
 	
 Save the batch file. Run the client by right clicking the saved file and select `Run in Adminstrator`.
 	
@@ -37,10 +36,8 @@ To export it to a jar file, right click on the imported project, select export, 
 ##Note
 Due to the complicated dependencies and my limited abilities, I'm not spending time to try delete some server classes since sometimes they share a same component class with a client.
 
-**Forgot to put in the language choosing dialog... Automatically reads `ch.lang`, deal with it yourself for now...**
-
 ##Known Issues
-* The icon won't show properly under OS X dock.  
+* The icon won't show properly under OS X dock. (It even shows properly under Ubuntu's taskbar)  
 
 > Basically everything works under my system...
 

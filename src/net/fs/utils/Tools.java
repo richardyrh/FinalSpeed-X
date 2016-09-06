@@ -30,7 +30,8 @@ public class Tools {
 		if(conn!=null){
 			conn.setConnectTimeout(10*1000);
 			conn.setReadTimeout(10*1000);
-			conn.setRequestMethod("POST");
+			conn.setRequestMethod("GET");
+			//conn.setRequestMethod("POST");
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);

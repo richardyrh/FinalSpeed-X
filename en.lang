@@ -13,7 +13,7 @@ Physical Bandwidth
 Download:
 Upload:
 Miscellaneous
-Run on Startup
+Startup
 This option is unavailable in non-Windows Environment.
 Show Log
 Save
@@ -64,5 +64,6 @@ Error
 : The name already exists.
 : Port occupied.
 Saving failed!
-Choose Language
+Language
 Failed to read current directory.
+The new language will be applied after a restart of the client.

@@ -52,15 +52,16 @@ public class ChooseLangFrame extends JDialog {
 			JOptionPane.showMessageDialog(this, ui.lang.g(67));
 			this.dispose();
 		}
-		mainPanel.add(languageCombo,"width :300:, growx, wrap");
+		mainPanel.add(languageCombo,"width :150:, growx, wrap");
 		
 		JButton buttonSave=createButton(ui.lang.g(18));
 		buttonSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (String k:descMap.keySet()) {
-					if (((String) languageCombo.getSelectedItem()).equals(descMap.get(k))) {
-						ui.changeLang(descMap.get(k));
+					if (languageCombo.getSelectedItem().toString().equals(descMap.get(k)+" - "+k)) {
+						ui.changeLang(k);
+						dispose();
 					}
 				}
 			}
@@ -72,8 +73,14 @@ public class ChooseLangFrame extends JDialog {
 				self.dispose();
 			}
 		});
-		mainPanel.add(buttonSave,"width 80!");
-		mainPanel.add(buttonBack,"width 80!");
+		JPanel buttonPanel=new JPanel();
+		buttonPanel.setLayout(new MigLayout("alignx center, insets 0 0 0 0"));
+		buttonPanel.add(buttonSave,"width 80!");
+		buttonPanel.add(buttonBack,"width 80!");
+		mainPanel.add(buttonPanel,"alignx center");
+		this.pack();
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 	
 	JButton createButton(String name){

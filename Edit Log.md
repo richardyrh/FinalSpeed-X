@@ -1,9 +1,5 @@
 # Edit Log
 
-`TODO:`  
- 
- - Add language choosing screen
-
 `Aug 31`
 
  - Started project
@@ -61,5 +57,17 @@
  - Removed some unecessary code
  
  This version is archived as `Beta`.
+ 
+** **
+ 
+ `Sep 6`
+ 
+ - Added language choosing screen
+ - Readded new version check
+ - Added Traditional Chinese
+ - Fixed a few bugs
+ - Tested under Ubuntu 16.04.1 LTS and Windows 10
+
+ This is the newest version so far, `1.0`.
  
  **Raise an issue if there's any bug or suggestions.**

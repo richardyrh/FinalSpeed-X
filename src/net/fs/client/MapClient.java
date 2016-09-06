@@ -168,7 +168,7 @@ public class MapClient implements Trafficlistener{
 		String ip;
 		try {
 			ip = InetAddress.getByName(serverAddress).getHostAddress();
-			if(systemName.contains("mac os")){
+			if(systemName.toLowerCase().contains("mac os")){
 				if(ui.isOsx_fw_pf ()){
 					String tempPath="./pf.conf";
 					File f=new File(tempPath);
@@ -197,12 +197,12 @@ public class MapClient implements Trafficlistener{
 					String cmd2="sudo ipfw add 5050 deny tcp from any to "+ip+" "+serverAddress+" out";
 					runCommand(cmd2);
 				}				
-			}else if(systemName.contains("linux")){
+			}else if(systemName.toLowerCase().contains("linux")){
 				String cmd2="iptables -t filter -A OUTPUT -d "+ip+" -p tcp --dport "+serverPort+" -j DROP -m comment --comment tcptun_fs ";
 				runCommand(cmd2);
-			}else if (systemName.contains("windows")) {
+			}else if (systemName.toLowerCase().contains("windows")) {
 				try {
-					if(systemName.contains("xp")||systemName.contains("2003")){
+					if(systemName.toLowerCase().contains("xp")||systemName.contains("2003")){
 						String cmd_add1="ipseccmd -w REG -p \"tcptun_fs\" -r \"Block TCP/"+serverPort+"\" -f 0/255.255.255.255="+ip+"/255.255.255.255:"+serverPort+":tcp -n BLOCK -x ";
 						final Process p2 = Runtime.getRuntime().exec(cmd_add1,null);
 						p2.waitFor();
@@ -241,11 +241,11 @@ public class MapClient implements Trafficlistener{
 	void cleanRule(){
 		if(systemName.contains("mac os")){
 			cleanTcpTunRule_osx();
-		}else if(systemName.contains("linux")){
+		}else if(systemName.toLowerCase().contains("linux")){
 			cleanTcpTunRule_linux();
 		}else {
 			try {
-				if(systemName.contains("xp")||systemName.contains("2003")){
+				if(systemName.toLowerCase().contains("xp")||systemName.contains("2003")){
 					String cmd_delete="ipseccmd -p \"tcptun_fs\" -w reg -y";
 					final Process p1 = Runtime.getRuntime().exec(cmd_delete,null);
 					p1.waitFor();

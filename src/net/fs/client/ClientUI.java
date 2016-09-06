@@ -157,7 +157,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 		
 		systemName = System.getProperty("os.name");
-		MLog.info(lang.g(1) + systemName + " "
+		MLog.info(lang.g(1) + systemName.toLowerCase() + " "
 				+ System.getProperty("os.version"));
 		ui = this;
 		mainFrame = new JFrame();
@@ -375,7 +375,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		loginPanel.add(sp2, "align center,  wrap");
 
 		final JCheckBox cb = new JCheckBox(lang.g(15), config.isAutoStart());
-		sp2.add(cb, "width 132!");
+		sp2.add(cb, "width 80!");
 		cb.addActionListener(new ActionListener() {
 
 			@Override
@@ -391,8 +391,18 @@ public class ClientUI implements ClientUII, WindowListener {
 			}
 
 		});
+		
+		JButton buttonChooseLang = createButton(lang.g(66));
+		sp2.add(buttonChooseLang,"width 80!");
+		buttonChooseLang.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ChooseLangFrame(ui,mainFrame);
+			}
+		});
+		
 		JButton button_show_log = createButton(lang.g(17));
-		sp2.add(button_show_log, "wrap, width 115!");
+		sp2.add(button_show_log, "wrap, width 80!");
 		button_show_log.addActionListener(new ActionListener() {
 
 			@Override
@@ -553,7 +563,7 @@ public class ClientUI implements ClientUII, WindowListener {
 					@Override
 					public void run() {
 						String msg = lang.g(24);
-						if (systemName.contains("windows")) {
+						if (systemName.toLowerCase().contains("windows")) {
 							msg = lang.g(25);
 						}
 						if (isVisible) {
@@ -561,7 +571,7 @@ public class ClientUI implements ClientUII, WindowListener {
 							JOptionPane.showMessageDialog(mainFrame, msg);
 						}
 						MLog.println(msg);
-						if (systemName.contains("windows")) {
+						if (systemName.toLowerCase().contains("windows")) {
 							try {
 								Runtime.getRuntime().exec("winpcap_install.exe", null);
 							} catch (IOException e) {
@@ -610,8 +620,7 @@ public class ClientUI implements ClientUII, WindowListener {
 		}
 
 		mapClient.setUi(this);
-
-		mapClient.setMapServer(config.getServerAddress(),
+				mapClient.setMapServer(config.getServerAddress(),
 				config.getServerPort(), config.getRemotePort(), null, null,
 				config.isDirect_cn(), config.getProtocol().equals("tcp"), null);
 
@@ -650,10 +659,13 @@ public class ClientUI implements ClientUII, WindowListener {
 	void changeLang(String newLang) {
 		langFile=newLang;
 		saveConfig();
+		String m=lang.g(68)+"\n";
+		lang.InitLangList(newLang);
+		JOptionPane.showMessageDialog(mainFrame, m+lang.g(68));
 	}
 
 	void checkFireWallOn() {
-		if (systemName.contains("os x")) {
+		if (systemName.toLowerCase().contains("os x")) {
 			String runFirewall = "ipfw";
 			try {
 				Runtime.getRuntime().exec(runFirewall, null);
@@ -669,14 +681,14 @@ public class ClientUI implements ClientUII, WindowListener {
 				// e.printStackTrace();
 			}
 			success_firewall_osx = osx_fw_ipfw | osx_fw_pf;
-		} else if (systemName.contains("linux")) {
+		} else if (systemName.toLowerCase().contains("linux")) {
 			String runFirewall = "service iptables start";
 			try {
 				Runtime.getRuntime().exec(runFirewall, null);
 			} catch (Exception e) {
 				//e.printStackTrace();
 			}
-		} else if (systemName.contains("windows")) {
+		} else if (systemName.toLowerCase().contains("windows")) {
 			String runFirewall = "netsh advfirewall set allprofiles state on";
 			Thread standReadThread = null;
 			Thread errorReadThread = null;
@@ -856,7 +868,9 @@ public class ClientUI implements ClientUII, WindowListener {
 		try {
 			String content = readFileUtf8(configFilePath);
 			JSONObject json = JSONObject.parseObject(content);
-			cfg.setLangFile(json.getString("lang_file"));
+			if (json.containsKey("lang_file")) {
+				cfg.setLangFile(json.getString("lang_file"));
+			}
 			cfg.setServerAddress(json.getString("server_address"));
 			cfg.setServerPort(json.getIntValue("server_port"));
 			cfg.setRemotePort(json.getIntValue("remote_port"));
@@ -1043,7 +1057,7 @@ public class ClientUI implements ClientUII, WindowListener {
 			fos = new FileOutputStream(path);
 			fos.write(data);
 		} catch (Exception e) {
-			if (systemName.contains("windows")) {
+			if (systemName.toLowerCase().contains("windows")) {
 				JOptionPane.showMessageDialog(null, lang.g(32)+" "
 						+ path);
 			} else {
@@ -1078,6 +1092,7 @@ public class ClientUI implements ClientUII, WindowListener {
 	}
 
 	public void checkUpdate() {
+		System.out.println("Checking Updates...");
 		for (int i = 0; i < 3; i++) {
 			checkingUpdate = true;
 			try {
@@ -1090,7 +1105,7 @@ public class ClientUI implements ClientUII, WindowListener {
 						.getProperty("version"));
 				break;
 			} catch (Exception e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 				try {
 					Thread.sleep(3 * 1000);
 				} catch (InterruptedException e1) {
